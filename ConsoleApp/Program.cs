@@ -1,7 +1,7 @@
 ﻿using ClassiUtili;
 
-Frazione f1 = new Frazione("2 / 3"); // 12/8
-Frazione f2 = new Frazione("3"); // 2/6
+Frazione f1 = new ("2 / 3"); 
+Frazione f2 = new ("3"); 
 
 // 2/3 -> 3/2
 Frazione f5 = Frazione.Reciproca(f1);
