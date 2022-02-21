@@ -4,7 +4,6 @@ namespace ClassiUtili
     public class Frazione
     {
         public int Numeratore { get; set; } = 0;
-
         private int denominatore = 1;
         public int Denominatore
         {
@@ -16,7 +15,6 @@ namespace ClassiUtili
                 denominatore = value;
             }
         }
-
         public Frazione(int numeratore, int denominatore)
         {
             Numeratore = numeratore;
@@ -37,7 +35,6 @@ namespace ClassiUtili
                 Denominatore = 1;
         }
         public Frazione() { }
-
         public static Frazione operator +(Frazione f1, Frazione f2)
         {
             return new Frazione(
@@ -50,20 +47,13 @@ namespace ClassiUtili
                 f1.Numeratore * f2.Numeratore,
                 f1.Denominatore * f2.Denominatore);
         }
-
-        public static Frazione Reciproca(Frazione f)
-        {
-            return new Frazione(f.Denominatore, f.Numeratore);
-        }
-
+        public static Frazione Reciproca(Frazione f) => new Frazione(f.Denominatore, f.Numeratore);
         public Frazione Semplifica()
         {
             int mcd = MCD(Numeratore, Denominatore);
             return new Frazione(Numeratore / mcd, Denominatore / mcd);
         }
-
         public int Segno() => Math.Sign(this.Numeratore * this.Denominatore);
-
         private int MCD(int n1, int n2)
         {
             for (int i = Math.Min(n1, n2); i > 1; i--)
