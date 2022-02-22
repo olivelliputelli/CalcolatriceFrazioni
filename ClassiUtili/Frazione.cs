@@ -53,8 +53,9 @@ namespace ClassiUtili
                 f1.Numeratore * f2.Numeratore,
                 f1.Denominatore * f2.Denominatore);
         }
+        public static Frazione operator /(Frazione f1, Frazione f2) => f1 * f2.Reciproca();
+        public Frazione Reciproca() => new Frazione(this.Denominatore, this.Numeratore);
         public static Frazione Reciproca(Frazione f) => new Frazione(f.Denominatore, f.Numeratore);
-
         public Frazione Semplifica()
         {
             int mcd = MCD(Numeratore, Denominatore);
@@ -67,13 +68,21 @@ namespace ClassiUtili
                 if (n1 % i == 0 && n2 % i == 0) return i;
             return 1;
         }
+        private int MCDE(int n1, int n2)
+        {
+            int temp;
+            while (n2 != 0)
+            {
+                temp = n2; n2 = n1 % n2; n1 = temp;
+            }
+            return n1;
+        }
         private int MCM(int n1, int n2)
         {
             for (int i = Math.Max(n1, n2); i < n1 * n2; i++)
                 if (i % n1 == 0 && i % n2 == 0) return i;
             return n1 * n2;
         }
-
         public override string ToString() => $"{Numeratore}/{Denominatore}";
     }
 }
