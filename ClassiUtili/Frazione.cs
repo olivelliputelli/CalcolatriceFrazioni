@@ -68,6 +68,7 @@ namespace ClassiUtili
                 if (n1 % i == 0 && n2 % i == 0) return i;
             return 1;
         }
+        // MCDE algoritmo di Euclide
         private int MCDE(int n1, int n2)
         {
             int temp;
