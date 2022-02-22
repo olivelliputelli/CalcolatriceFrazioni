@@ -7,7 +7,7 @@ namespace ClassiUtili
         private int denominatore = 1;
         public int Denominatore
         {
-            get { return denominatore; }
+            get => denominatore;
             private set
             {
                 if (value == 0)
@@ -15,6 +15,8 @@ namespace ClassiUtili
                 denominatore = value;
             }
         }
+
+        // Costruttori
         public Frazione(int numeratore, int denominatore)
         {
             Numeratore = numeratore;
@@ -25,16 +27,18 @@ namespace ClassiUtili
         {
             if (String.IsNullOrWhiteSpace(s)) return;
 
-            string[] elementi = s.Split('/'); // "2/7" "5"
+            string[] elementi = s.Split('/'); // ["2","7"] oppure ["5"]
 
             Numeratore = int.Parse(elementi[0]);
 
-            if (elementi.Length > 1)
-                Denominatore = int.Parse(elementi[1]);
-            else
+            if (elementi.Length == 1) // "5"
                 Denominatore = 1;
+            else
+                Denominatore = int.Parse(elementi[1]); // "2/7"
         }
         public Frazione() { }
+
+        // Operatori
         public static Frazione operator +(Frazione f1, Frazione f2)
         {
             return new Frazione(
