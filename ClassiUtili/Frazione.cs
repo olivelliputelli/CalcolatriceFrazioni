@@ -87,8 +87,8 @@ namespace ClassiUtili
         public override string ToString()
         {
             if (Numeratore == 0) return "0";
-            return (Denominatore == 1) ? $"{Numeratore}"
-                : $"{Numeratore}/{Denominatore}";
+            return String.Concat(this.Segno(), (Denominatore == 1) ? $"{Math.Abs(Numeratore)}"
+                : $"{Math.Abs(Numeratore)}/{Math.Abs(Denominatore)}");
         }
     }
 }
