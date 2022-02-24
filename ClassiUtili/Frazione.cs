@@ -62,14 +62,14 @@ namespace ClassiUtili
             return new Frazione(Numeratore / mcd, Denominatore / mcd);
         }
         public int Segno() => Math.Sign(this.Numeratore * this.Denominatore);
+
+        /// <summary>
+        /// Algoritmo di Euclide per calcolare il massimo comune divisore.
+        /// </summary>
+        /// <param name="n1">Un intero.</param>
+        /// <param name="n2">Un intero.</param>
+        /// <returns>Il MCD di n1 e n2</returns>
         private int MCD(int n1, int n2)
-        {
-            for (int i = Math.Min(n1, n2); i > 1; i--)
-                if (n1 % i == 0 && n2 % i == 0) return i;
-            return 1;
-        }
-        // MCDE algoritmo di Euclide
-        private int MCDE(int n1, int n2)
         {
             int temp;
             while (n2 != 0)
@@ -84,6 +84,11 @@ namespace ClassiUtili
                 if (i % n1 == 0 && i % n2 == 0) return i;
             return n1 * n2;
         }
-        public override string ToString() => $"{Numeratore}/{Denominatore}";
+        public override string ToString()
+        {
+            if (Numeratore == 0) return "0";
+            return (Denominatore == 1) ? $"{Numeratore}"
+                : $"{Numeratore}/{Denominatore}";
+        }
     }
 }
