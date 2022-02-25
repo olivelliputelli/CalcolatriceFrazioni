@@ -92,7 +92,7 @@ namespace ClassiUtili
         public override string ToString()
         {
             if (Numeratore == 0) return "0";
-            return String.Concat(this.Segno(), (Denominatore == 1) ? $"{Math.Abs(Numeratore)}"
+            return String.Concat((this.Segno()<0)?"-":"", (Denominatore == 1) ? $"{Math.Abs(Numeratore)}"
                 : $"{Math.Abs(Numeratore)}/{Math.Abs(Denominatore)}");
         }
     }
