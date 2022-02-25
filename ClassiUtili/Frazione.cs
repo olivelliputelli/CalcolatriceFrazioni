@@ -39,6 +39,7 @@ namespace ClassiUtili
         public Frazione() { }
 
         // Operatori
+        public static Frazione operator +(Frazione f) => f;
         public static Frazione operator -(Frazione f) => new Frazione(-f.Numeratore, f.Denominatore);
         public static Frazione operator +(Frazione f1, Frazione f2)
         {
@@ -53,7 +54,11 @@ namespace ClassiUtili
                 f1.Numeratore * f2.Numeratore,
                 f1.Denominatore * f2.Denominatore);
         }
-        public static Frazione operator /(Frazione f1, Frazione f2) => f1 * f2.Reciproca();
+        public static Frazione operator /(Frazione f1, Frazione f2)
+        {
+            if (f2.Numeratore == 0) throw new DivideByZeroException();
+            return new Frazione(f1.Numeratore * f2.Denominatore, f1.Denominatore * f2.Numeratore);
+        }
         public Frazione Reciproca() => new Frazione(this.Denominatore, this.Numeratore);
         public static Frazione Reciproca(Frazione f) => new Frazione(f.Denominatore, f.Numeratore);
         public Frazione Semplifica()
