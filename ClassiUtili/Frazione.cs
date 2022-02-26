@@ -56,7 +56,7 @@ namespace ClassiUtili
         }
         public static Frazione operator /(Frazione f1, Frazione f2)
         {
-            if (f2.Numeratore == 0) throw new DivideByZeroException();
+            if (f2.Numeratore == 0) throw new DivideByZeroException("Divisione per ZERO!");
             return new Frazione(f1.Numeratore * f2.Denominatore, f1.Denominatore * f2.Numeratore);
         }
         public Frazione Reciproca() => new Frazione(this.Denominatore, this.Numeratore);
