@@ -1,18 +1,44 @@
 ﻿@page "/counter"
-
+@inject IJSRuntime JS
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
+@*<div
+    class="jumbotron"
+    @onkeydown="@KeyDown"
+    tabindex="0"
+    @ref="myDiv" >
+    <h1 class="display-4">
+    @letter
+    </h1>
+    </div>*@
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<div @onkeypress="e => KeyPress(e)" tabindex="0" @ref="myDiv">
+    <h1 class="display-4">
+        SSSS
+        @letter
+    </h1>
+</div>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    string letter = "";
+    private void KeyPress(KeyboardEventArgs e)
     {
-        currentCount++;
+        letter += e.Key;
+    }
+    protected void KeyDown(KeyboardEventArgs e)
+    {
+        letter = $"Pressed: [{e.Key}]";
+    }
+
+    protected ElementReference myDiv;  // set by the @ref attribute
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("SetFocusToElement", myDiv);
+        }
     }
 }

@@ -1,48 +1,47 @@
 ﻿@page "/"
-
+@inject IJSRuntime JS
 <PageTitle>Index</PageTitle>
 
-<h1>Calcolatrice</h1>
-<input @bind="@Display" @onkeydown="@Enter" class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" disabled>
+<div @onkeypress="e => KeyPress(e)" tabindex="0" @ref="myDiv">
+    <h1>Calcolatrice</h1>
 
-<div class="alert alert-secondary" role="alert" @onkeydown="@Enter">
-  &nbsp;@Display
+    <div class="alert alert-secondary" role="alert" style="text-align:right;">
+        &nbsp;@Display
+    </div>
+ 
+    <table style="text-align:center;">
+        <tr>
+            <td><button>X</button></td>
+            <td><button @onclick="Cancella">C</button></td>
+            <td><button>X</button></td>
+            <td><button>X</button></td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-dark" @onclick='(()=>M1("7"))'>7</button></td>
+            <td><button type="button" class="btn btn-dark" @onclick='(()=>M1("8"))'>8</button></td>
+            <td><button type="button" class="btn btn-dark" @onclick='(()=>M1("9"))'>9</button></td>
+            <td><button type="button" class="btn btn-secondary" @onclick='Moltiplica'>*</button></td>
+        </tr>
+        <tr>
+            <td><button @onclick='(()=>M1("4"))'>4</button></td>
+            <td><button @onclick='(()=>M1("5"))'>5</button></td>
+            <td><button @onclick='(()=>M1("6"))'>6</button></td>
+            <td><button @onclick='(()=>M1("/"))'>ͱ</button></td>
+        </tr>
+        <tr>
+            <td><button @onclick='(()=>M1("1"))'>1</button></td>
+            <td><button @onclick='(()=>M1("2"))'>2</button></td>
+            <td><button @onclick='(()=>M1("3"))'>3</button></td>
+            <td><button @onclick='Divisione'>/</button></td>
+        </tr>
+        <tr>
+            <td><button @onclick='(()=>M1("-"))'>±</button></td>
+            <td><button @onclick='(()=>M1("0"))'>0</button></td>
+
+            <td colspan="2"><button type="button" class="btn btn-success" @onclick="Calcola">&nbsp; = &nbsp;</button></td>
+        </tr>
+    </table>
 </div>
-<input @bind="@Display" @onkeydown="@Enter" class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" disabled>
-
-<table style="text-align:center;">
-    <tr>
-        <td><button>X</button></td>
-        <td><button @onclick="Cancella">C</button></td>
-        <td><button>X</button></td>
-        <td><button>X</button></td>
-    </tr>
-    <tr>
-        <td><button @onclick='(()=>M1("7"))'>7</button></td>
-        <td><button @onclick='(()=>M1("8"))'>8</button></td>
-        <td><button @onclick='(()=>M1("9"))'>9</button></td>
-        <td><button @onclick='Moltiplica'>*</button></td>
-    </tr>
-    <tr>
-        <td><button @onclick='(()=>M1("4"))'>4</button></td>
-        <td><button @onclick='(()=>M1("5"))'>5</button></td>
-        <td><button @onclick='(()=>M1("6"))'>6</button></td>
-        <td><button @onclick='(()=>M1("/"))'>ͱ</button></td>
-    </tr>
-    <tr>
-        <td><button @onclick='(()=>M1("1"))'>1</button></td>
-        <td><button @onclick='(()=>M1("2"))'>2</button></td>
-        <td><button @onclick='(()=>M1("3"))'>3</button></td>
-        <td><button @onclick='Divisione'>/</button></td>
-    </tr>
-    <tr>
-        <td><button @onclick='(()=>M1("-"))'>±</button></td>
-        <td><button @onclick='(()=>M1("0"))'>0</button></td>
-   
-        <td colspan="2"><button type="button" class="btn btn-success" @onclick="Calcola">&nbsp; = &nbsp;</button></td>
-    </tr>
-</table>
-
 @code {
     private string Display { get; set; } = "";
     private Frazione f1 = new();
@@ -90,6 +89,19 @@
     private void TastoPremuto(KeyboardEventArgs e) => Display += e.Key;
 
 
-    void Enter(KeyboardEventArgs e) => Display += e.Key;
 
+    private void KeyPress(KeyboardEventArgs e)
+    {
+        if (char.IsDigit(e.Key[0]))
+            Display += e.Key;
+    }
+    protected ElementReference myDiv;  // set by the @ref attribute
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("SetFocusToElement", myDiv);
+        }
+    }
 }
