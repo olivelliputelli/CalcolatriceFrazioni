@@ -3,13 +3,19 @@
 <PageTitle>Index</PageTitle>
 
 <h1>Calcolatrice</h1>
-<p>@Display</p>
-<table>
+<input @bind="@Display" @onkeydown="@Enter" class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" disabled>
+
+<div class="alert alert-secondary" role="alert" @onkeydown="@Enter">
+  &nbsp;@Display
+</div>
+<input @bind="@Display" @onkeydown="@Enter" class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" disabled>
+
+<table style="text-align:center;">
     <tr>
         <td><button>X</button></td>
         <td><button @onclick="Cancella">C</button></td>
         <td><button>X</button></td>
-        <td><button @onclick="Calcola">=</button></td>
+        <td><button>X</button></td>
     </tr>
     <tr>
         <td><button @onclick='(()=>M1("7"))'>7</button></td>
@@ -27,10 +33,15 @@
         <td><button @onclick='(()=>M1("1"))'>1</button></td>
         <td><button @onclick='(()=>M1("2"))'>2</button></td>
         <td><button @onclick='(()=>M1("3"))'>3</button></td>
-        <td><button @onclick='(Divisione)'>/</button></td>
+        <td><button @onclick='Divisione'>/</button></td>
+    </tr>
+    <tr>
+        <td><button @onclick='(()=>M1("-"))'>±</button></td>
+        <td><button @onclick='(()=>M1("0"))'>0</button></td>
+   
+        <td colspan="2"><button type="button" class="btn btn-success" @onclick="Calcola">&nbsp; = &nbsp;</button></td>
     </tr>
 </table>
-
 
 @code {
     private string Display { get; set; } = "";
@@ -42,12 +53,10 @@
     {
         Display += s;
     }
-
     private void Cancella()
     {
         Display = "";
     }
-
     private void Moltiplica()
     {
         opt = '*';
@@ -78,5 +87,9 @@
         }
         Display = risultato.Semplifica().ToString();
     }
+    private void TastoPremuto(KeyboardEventArgs e) => Display += e.Key;
+
+
+    void Enter(KeyboardEventArgs e) => Display += e.Key;
 
 }
