@@ -1,8 +1,15 @@
 ﻿
 namespace ClassiUtili
 {
+    /// <summary>
+    /// Classe utile per lavorare con frazioni.
+    /// Contiene metodi per svolgere operazioni sulle frazioni.
+    /// </summary>
     public class Frazione
     {
+        /// <summary>
+        /// Numeratore della frazione
+        /// </summary>
         public int Numeratore { get; set; } = 0;
         private int denominatore = 1;
         public int Denominatore
@@ -66,6 +73,10 @@ namespace ClassiUtili
             int mcd = MCD(Numeratore, Denominatore);
             return new Frazione(Numeratore / mcd, Denominatore / mcd);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int Segno() => Math.Sign(this.Numeratore * this.Denominatore);
 
         /// <summary>
