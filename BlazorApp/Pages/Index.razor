@@ -5,40 +5,43 @@
 <div @onkeypress="e => KeyPress(e)" tabindex="0" @ref="myDiv">
     <h1>Calcolatrice</h1>
 
-    <div class="alert alert-secondary" role="alert" style="text-align:right;">
-        &nbsp;@Display
-    </div>
- 
-    <table style="text-align:center;">
-        <tr>
-            <td><button>X</button></td>
-            <td><button @onclick="Cancella">C</button></td>
-            <td><button>X</button></td>
-            <td><button>X</button></td>
-        </tr>
-        <tr>
-            <td><button type="button" class="btn btn-dark" @onclick='(()=>M1("7"))'>7</button></td>
-            <td><button type="button" class="btn btn-dark" @onclick='(()=>M1("8"))'>8</button></td>
-            <td><button type="button" class="btn btn-dark" @onclick='(()=>M1("9"))'>9</button></td>
-            <td><button type="button" class="btn btn-secondary" @onclick='Moltiplica'>*</button></td>
-        </tr>
-        <tr>
-            <td><button @onclick='(()=>M1("4"))'>4</button></td>
-            <td><button @onclick='(()=>M1("5"))'>5</button></td>
-            <td><button @onclick='(()=>M1("6"))'>6</button></td>
-            <td><button @onclick='(()=>M1("/"))'>ͱ</button></td>
-        </tr>
-        <tr>
-            <td><button @onclick='(()=>M1("1"))'>1</button></td>
-            <td><button @onclick='(()=>M1("2"))'>2</button></td>
-            <td><button @onclick='(()=>M1("3"))'>3</button></td>
-            <td><button @onclick='Divisione'>/</button></td>
-        </tr>
-        <tr>
-            <td><button @onclick='(()=>M1("-"))'>±</button></td>
-            <td><button @onclick='(()=>M1("0"))'>0</button></td>
 
-            <td colspan="2"><button type="button" class="btn btn-success" @onclick="Calcola">&nbsp; = &nbsp;</button></td>
+
+    <table style="text-align:center;">
+        <caption class="caption-top">
+            <div class="alert alert-secondary" role="alert" style="text-align:right;">
+                &nbsp;@Display
+            </div>
+        </caption>
+        <tr>
+            <td><button class="btn btn-dark" @onclick="Cancella">C</button></td>
+            <td><button class="btn btn-dark" @onclick='TornaIndietro'>←</button></td>
+            <td><button class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>
+
+            <td><button class="btn btn-dark" @onclick='Divisione'>÷</button></td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("7"))'>7</button></td>
+            <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("8"))'>8</button></td>
+            <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("9"))'>9</button></td>
+            <td><button type="button" class="btn btn-dark" @onclick='Moltiplica'>×</button></td>
+        </tr>
+        <tr>
+            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("4"))'>4</button></td>
+            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("5"))'>5</button></td>
+            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("6"))'>6</button></td>
+            <td><button type="button" class="btn btn-dark" @onclick='Differenza'>-</button></td>
+        </tr>
+        <tr>
+            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("1"))'>1</button></td>
+            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("2"))'>2</button></td>
+            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("3"))'>3</button></td>
+            <td><button type="button" class="btn btn-dark" @onclick='Somma'>+</button></td>
+        </tr>
+        <tr>
+            <td><button class="btn btn-dark" @onclick='(()=>Tasto("-"))'>±</button></td>
+            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("0"))'>0</button></td>
+            <td colspan="2"><button class="btn btn-primary px-4" type="button" @onclick="Calcola">&nbsp; = &nbsp;</button></td>
         </tr>
     </table>
 </div>
@@ -48,12 +51,25 @@
     private Frazione f2 = new();
     private char opt = '\0';
 
-    private void M1(string s)
-    {
-        Display += s;
-    }
+    private void Tasto(string s) => Display += s;
     private void Cancella()
     {
+        Display = "";
+    }
+    private void TornaIndietro()
+    {
+        if (Display.Length > 0) Display = Display.Substring(0, Display.Length - 1);
+    }
+    private void Somma()
+    {
+        opt = '+';
+        f1 = new Frazione(Display);
+        Display = "";
+    }
+    private void Differenza()
+    {
+        opt = '-';
+        f1 = new Frazione(Display);
         Display = "";
     }
     private void Moltiplica()
@@ -83,12 +99,13 @@
             case '+':
                 risultato = f1 + f2;
                 break;
+            case '-':
+                risultato = f1 - f2;
+                break;
         }
         Display = risultato.Semplifica().ToString();
     }
     private void TastoPremuto(KeyboardEventArgs e) => Display += e.Key;
-
-
 
     private void KeyPress(KeyboardEventArgs e)
     {
