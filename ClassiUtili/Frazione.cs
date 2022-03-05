@@ -12,6 +12,9 @@ namespace ClassiUtili
         /// </summary>
         public int Numeratore { get; set; } = 0;
         private int denominatore = 1;
+        /// <summary>
+        /// Denominatore della frazione
+        /// </summary>
         public int Denominatore
         {
             get => denominatore;
@@ -24,6 +27,11 @@ namespace ClassiUtili
         }
 
         // Costruttori
+        /// <summary>
+        /// Costruire una frazione da due numeri
+        /// </summary>
+        /// <param name="numeratore">Il Numeratore della frazione</param>
+        /// <param name="denominatore">Il Numeratore della frazione</param>
         public Frazione(int numeratore, int denominatore)
         {
             Numeratore = numeratore;
@@ -48,6 +56,22 @@ namespace ClassiUtili
         // Operatori
         public static Frazione operator +(Frazione f) => f;
         public static Frazione operator -(Frazione f) => new Frazione(-f.Numeratore, f.Denominatore);
+
+        /// <summary>
+        /// Somma due frazioni <paramref name="f1"/> e <paramref name="f2"/> 
+        /// e restituisce il risultato.
+        /// </summary>
+        /// <param name="f1">Una frazione.</param>
+        /// <param name="f2">Una frazione</param>
+        /// <returns>La somma di due frazioni.</returns>
+        /// <example>
+        /// <code>
+        /// var a = new Frazione(5);
+        /// var b = new Frazione(6, 2);
+        /// var c = a + b;
+        /// </code>
+        /// </example>
+
         public static Frazione operator +(Frazione f1, Frazione f2)
         {
             return new Frazione(
@@ -61,6 +85,16 @@ namespace ClassiUtili
                 f1.Numeratore * f2.Numeratore,
                 f1.Denominatore * f2.Denominatore);
         }
+        /// <summary>
+        /// Divide due frazioni <paramref name="f1"/> e <paramref name="f2"/> 
+        /// e restituisce il risultato.
+        /// </summary>
+        /// <param name="f1">Una frazione.</param>
+        /// <param name="f2">Una frazione</param>
+        /// <returns>Il rapporto di due frazioni.</returns>
+        /// <exception cref="DivideByZeroException">
+        /// Thrown quando il denominatore è 0.
+        /// </exception>
         public static Frazione operator /(Frazione f1, Frazione f2)
         {
             if (f2.Numeratore == 0) throw new DivideByZeroException("Divisione per ZERO!");
@@ -74,9 +108,9 @@ namespace ClassiUtili
             return new Frazione(Numeratore / mcd, Denominatore / mcd);
         }
         /// <summary>
-        /// 
+        /// Il segno della frazione
         /// </summary>
-        /// <returns></returns>
+        /// <returns>+1 positiva, -1 negativa oppure 0</returns>
         public int Segno() => Math.Sign(this.Numeratore * this.Denominatore);
 
         /// <summary>
