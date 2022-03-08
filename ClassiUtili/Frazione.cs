@@ -26,18 +26,21 @@ namespace ClassiUtili
             }
         }
 
-        // Costruttori
         /// <summary>
-        /// Costruire una frazione da due numeri
+        /// Costruire una frazione da due numeri.
         /// </summary>
-        /// <param name="numeratore">Il Numeratore della frazione</param>
-        /// <param name="denominatore">Il Numeratore della frazione</param>
+        /// <param name="numeratore">Il Numeratore della frazione.</param>
+        /// <param name="denominatore">Il Denominatore della frazione.</param>
         public Frazione(int numeratore, int denominatore)
         {
             Numeratore = numeratore;
             Denominatore = denominatore;
         }
         public Frazione(int numeratore) : this(numeratore, 1) { }
+        /// <summary>
+        /// Costruire una frazione da una stringa.
+        /// </summary>
+        /// <param name="s">La stringa che rappresenta la frazione.</param>
         public Frazione(string s)
         {
             if (String.IsNullOrWhiteSpace(s)) return;
@@ -62,7 +65,7 @@ namespace ClassiUtili
         /// e restituisce il risultato.
         /// </summary>
         /// <param name="f1">Una frazione.</param>
-        /// <param name="f2">Una frazione</param>
+        /// <param name="f2">Una frazione.</param>
         /// <returns>La somma di due frazioni.</returns>
         /// <example>
         /// <code>
@@ -71,7 +74,6 @@ namespace ClassiUtili
         /// var c = a + b;
         /// </code>
         /// </example>
-
         public static Frazione operator +(Frazione f1, Frazione f2)
         {
             return new Frazione(

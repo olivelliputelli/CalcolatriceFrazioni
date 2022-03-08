@@ -1,50 +1,46 @@
 ﻿@page "/"
 @inject IJSRuntime JS
 <PageTitle>Index</PageTitle>
+<h1>Calcolatrice</h1>
 
-<div @onkeypress="e => KeyPress(e)" tabindex="0" @ref="myDiv">
-    <h1>Calcolatrice</h1>
+<table style="text-align:center;">
+    <caption class="caption-top">
+        <div class="alert alert-secondary" role="alert" style="text-align:right;">
+            &nbsp;@Display
+        </div>
+    </caption>
+    <tr>
+        <td><button class="btn btn-dark" @onclick="Cancella">C</button></td>
+        <td><button class="btn btn-dark" @onclick='TornaIndietro'>←</button></td>
+        <td><button class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>
 
+        <td><button class="btn btn-dark" @onclick='Divisione'>÷</button></td>
+    </tr>
+    <tr>
+        <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("7"))'>7</button></td>
+        <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("8"))'>8</button></td>
+        <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("9"))'>9</button></td>
+        <td><button type="button" class="btn btn-dark" @onclick='Moltiplica'>×</button></td>
+    </tr>
+    <tr>
+        <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("4"))'>4</button></td>
+        <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("5"))'>5</button></td>
+        <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("6"))'>6</button></td>
+        <td><button type="button" class="btn btn-dark" @onclick='Differenza'>-</button></td>
+    </tr>
+    <tr>
+        <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("1"))'>1</button></td>
+        <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("2"))'>2</button></td>
+        <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("3"))'>3</button></td>
+        <td><button type="button" class="btn btn-dark" @onclick='Somma'>+</button></td>
+    </tr>
+    <tr>
+        <td><button class="btn btn-dark" @onclick='(()=>Tasto("-"))'>±</button></td>
+        <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("0"))'>0</button></td>
+        <td colspan="2"><button class="btn btn-primary px-4" type="button" @onclick="Calcola">&nbsp; = &nbsp;</button></td>
+    </tr>
+</table>
 
-
-    <table style="text-align:center;">
-        <caption class="caption-top">
-            <div class="alert alert-secondary" role="alert" style="text-align:right;">
-                &nbsp;@Display
-            </div>
-        </caption>
-        <tr>
-            <td><button class="btn btn-dark" @onclick="Cancella">C</button></td>
-            <td><button class="btn btn-dark" @onclick='TornaIndietro'>←</button></td>
-            <td><button class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>
-
-            <td><button class="btn btn-dark" @onclick='Divisione'>÷</button></td>
-        </tr>
-        <tr>
-            <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("7"))'>7</button></td>
-            <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("8"))'>8</button></td>
-            <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("9"))'>9</button></td>
-            <td><button type="button" class="btn btn-dark" @onclick='Moltiplica'>×</button></td>
-        </tr>
-        <tr>
-            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("4"))'>4</button></td>
-            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("5"))'>5</button></td>
-            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("6"))'>6</button></td>
-            <td><button type="button" class="btn btn-dark" @onclick='Differenza'>-</button></td>
-        </tr>
-        <tr>
-            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("1"))'>1</button></td>
-            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("2"))'>2</button></td>
-            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("3"))'>3</button></td>
-            <td><button type="button" class="btn btn-dark" @onclick='Somma'>+</button></td>
-        </tr>
-        <tr>
-            <td><button class="btn btn-dark" @onclick='(()=>Tasto("-"))'>±</button></td>
-            <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("0"))'>0</button></td>
-            <td colspan="2"><button class="btn btn-primary px-4" type="button" @onclick="Calcola">&nbsp; = &nbsp;</button></td>
-        </tr>
-    </table>
-</div>
 @code {
     private string Display { get; set; } = "";
     private Frazione f1 = new();
@@ -104,21 +100,5 @@
                 break;
         }
         Display = risultato.Semplifica().ToString();
-    }
-    private void TastoPremuto(KeyboardEventArgs e) => Display += e.Key;
-
-    private void KeyPress(KeyboardEventArgs e)
-    {
-        if (char.IsDigit(e.Key[0]))
-            Display += e.Key;
-    }
-    protected ElementReference myDiv;  // set by the @ref attribute
-
-    protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync("SetFocusToElement", myDiv);
-        }
     }
 }
