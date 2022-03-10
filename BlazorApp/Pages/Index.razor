@@ -1,5 +1,5 @@
 ﻿@page "/"
-@inject IJSRuntime JS
+
 <PageTitle>Index</PageTitle>
 <h1>Calcolatrice</h1>
 
@@ -13,7 +13,6 @@
         <td><button class="btn btn-dark" @onclick="Cancella">C</button></td>
         <td><button class="btn btn-dark" @onclick='TornaIndietro'>←</button></td>
         <td><button class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>
-
         <td><button class="btn btn-dark" @onclick='Divisione'>÷</button></td>
     </tr>
     <tr>
@@ -40,12 +39,19 @@
         <td colspan="2"><button class="btn btn-primary px-4" type="button" @onclick="Calcola">&nbsp; = &nbsp;</button></td>
     </tr>
 </table>
+<ul>
+    @foreach (var item in StoricoOperazioni)
+    {
+        <li>@item</li>
+    }
+</ul>
 
 @code {
     private string Display { get; set; } = "";
     private Frazione f1 = new();
     private Frazione f2 = new();
     private char opt = '\0';
+    private List<string> StoricoOperazioni = new();
 
     private void Tasto(string s) => Display += s;
     private void Cancella()
@@ -59,24 +65,28 @@
     private void Somma()
     {
         opt = '+';
+        Calcola();
         f1 = new Frazione(Display);
         Display = "";
     }
     private void Differenza()
     {
         opt = '-';
+        Calcola();
         f1 = new Frazione(Display);
         Display = "";
     }
     private void Moltiplica()
     {
         opt = '*';
+        Calcola();
         f1 = new Frazione(Display);
         Display = "";
     }
     private void Divisione()
     {
         opt = '/';
+        Calcola();
         f1 = new Frazione(Display);
         Display = "";
     }
@@ -98,7 +108,11 @@
             case '-':
                 risultato = f1 - f2;
                 break;
+            default:
+                risultato = f1;
+                break;
         }
         Display = risultato.Semplifica().ToString();
+        StoricoOperazioni.Add(String.Concat(f1, opt, f2, " = ", Display));
     }
 }

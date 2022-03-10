@@ -11,18 +11,18 @@ namespace ClassiUtili
         /// Numeratore della frazione
         /// </summary>
         public int Numeratore { get; set; } = 0;
-        private int denominatore = 1;
+        private int _denominatore = 1;
         /// <summary>
         /// Denominatore della frazione
         /// </summary>
         public int Denominatore
         {
-            get => denominatore;
+            get => _denominatore;
             private set
             {
                 if (value == 0)
                     throw new ArgumentException("Denominatore ZERO!");
-                denominatore = value;
+                _denominatore = value;
             }
         }
 
@@ -36,7 +36,11 @@ namespace ClassiUtili
             Numeratore = numeratore;
             Denominatore = denominatore;
         }
-        public Frazione(int numeratore) : this(numeratore, 1) { }
+        /// <summary>
+        /// Costruisce una frazione a partire da un numero intero.
+        /// </summary>
+        /// <param name="numero">Un numero intero.</param>
+        public Frazione(int numero) : this(numero, 1) { }
         /// <summary>
         /// Costruire una frazione da una stringa.
         /// </summary>
@@ -54,11 +58,23 @@ namespace ClassiUtili
             else
                 Denominatore = int.Parse(elementi[1]); // "2/7"
         }
+        /// <summary>
+        /// Costruisce la frazione 0/1.
+        /// </summary>
         public Frazione() { }
 
-        // Operatori
+        /// <summary>
+        /// Operatore + unario.
+        /// </summary>
+        /// <param name="f">Una frazione.</param>
+        /// <returns>La frazione</returns>
         public static Frazione operator +(Frazione f) => f;
-        public static Frazione operator -(Frazione f) => new Frazione(-f.Numeratore, f.Denominatore);
+        /// <summary>
+        /// Operatore - unario.
+        /// </summary>
+        /// <param name="f">Una frazione.</param>
+        /// <returns>Restituisce la frazione opposta.</returns>
+        public static Frazione operator -(Frazione f) => new(-f.Numeratore, f.Denominatore);
 
         /// <summary>
         /// Somma due frazioni <paramref name="f1"/> e <paramref name="f2"/> 
@@ -102,15 +118,23 @@ namespace ClassiUtili
             if (f2.Numeratore == 0) throw new DivideByZeroException("Divisione per ZERO!");
             return new Frazione(f1.Numeratore * f2.Denominatore, f1.Denominatore * f2.Numeratore);
         }
-        public Frazione Reciproca() => new Frazione(this.Denominatore, this.Numeratore);
-        public static Frazione Reciproca(Frazione f) => new Frazione(f.Denominatore, f.Numeratore);
+        public static Frazione operator ++(Frazione f) => f + 1;
+        public static Frazione operator --(Frazione f) => f - 1;
+        public static implicit operator Frazione(int n) => new Frazione(n);
+        public static explicit operator Frazione(string n) => new Frazione(n);
+        public Frazione Reciproca() => new(this.Denominatore, this.Numeratore);
+        public static Frazione Reciproca(Frazione f) => new(f.Denominatore, f.Numeratore);
+        /// <summary>
+        /// Semplifica ai minimi termini una frazione.
+        /// </summary>
+        /// <returns>Restituisce una frazione <paramref name="f"/> semplificata.</returns>
         public Frazione Semplifica()
         {
-            int mcd = MCD(Numeratore, Denominatore);
+            int mcd = Mcd(Numeratore, Denominatore);
             return new Frazione(Numeratore / mcd, Denominatore / mcd);
         }
         /// <summary>
-        /// Il segno della frazione
+        /// Il segno della frazione.
         /// </summary>
         /// <returns>+1 positiva, -1 negativa oppure 0</returns>
         public int Segno() => Math.Sign(this.Numeratore * this.Denominatore);
@@ -121,7 +145,7 @@ namespace ClassiUtili
         /// <param name="n1">Un intero.</param>
         /// <param name="n2">Un intero.</param>
         /// <returns>Il MCD di n1 e n2</returns>
-        private int MCD(int n1, int n2)
+        private static int Mcd(int n1, int n2)
         {
             int temp;
             while (n2 != 0)
@@ -130,17 +154,22 @@ namespace ClassiUtili
             }
             return n1;
         }
-        private int MCM(int n1, int n2)
+        private static int Mcm(int n1, int n2)
         {
             for (int i = Math.Max(n1, n2); i < n1 * n2; i++)
                 if (i % n1 == 0 && i % n2 == 0) return i;
             return n1 * n2;
         }
+        /// <summary>
+        /// Overload del metodo.
+        /// </summary>
+        /// <returns>Rappresentazione di una frazione come stringa.</returns>
         public override string ToString()
         {
             if (Numeratore == 0) return "0";
-            return String.Concat((this.Segno()<0)?"-":"", (Denominatore == 1) ? $"{Math.Abs(Numeratore)}"
+            return String.Concat((this.Segno() < 0) ? "-" : "", (Denominatore == 1) ? $"{Math.Abs(Numeratore)}"
                 : $"{Math.Abs(Numeratore)}/{Math.Abs(Denominatore)}");
         }
+
     }
 }
