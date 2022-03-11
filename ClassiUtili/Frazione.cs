@@ -122,13 +122,19 @@ namespace ClassiUtili
         public static Frazione operator --(Frazione f) => f - 1;
         public static implicit operator Frazione(int n) => new Frazione(n);
         public static explicit operator Frazione(string n) => new Frazione(n);
+
+        public static bool operator ==(Frazione f1, Frazione f2)
+            => f1.Numeratore * f2.Denominatore == f2.Numeratore * f1.Denominatore;
+        public static bool operator !=(Frazione f1, Frazione f2)
+        => !(f1 == f2);
+
         /// <summary>
         /// Necessario per poter operare sulla forma come numero razionale 
         /// delle frazioni.
         /// </summary>
         /// <param name="n"></param>
-        public static explicit operator double(Frazione n) 
-            => n.Numeratore/(double)n.Denominatore;
+        public static explicit operator double(Frazione n)
+            => n.Numeratore / (double)n.Denominatore;
 
         public Frazione Reciproca() => new(this.Denominatore, this.Numeratore);
         public static Frazione Reciproca(Frazione f) => new(f.Denominatore, f.Numeratore);

@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Calcolatrice</PageTitle>
 <h1>Calcolatrice</h1>
 
 <table style="text-align:center;">
@@ -64,29 +64,26 @@
     }
     private void Somma()
     {
-        opt = '+';
         Calcola();
+        opt = '+';
         f1 = new Frazione(Display);
         Display = "";
     }
     private void Differenza()
     {
         opt = '-';
-        Calcola();
         f1 = new Frazione(Display);
         Display = "";
     }
     private void Moltiplica()
     {
         opt = '*';
-        Calcola();
         f1 = new Frazione(Display);
         Display = "";
     }
     private void Divisione()
     {
         opt = '/';
-        Calcola();
         f1 = new Frazione(Display);
         Display = "";
     }
