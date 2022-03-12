@@ -36,7 +36,7 @@
     <tr>
         <td><button class="btn btn-dark" @onclick='(()=>Tasto("-"))'>±</button></td>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("0"))'>0</button></td>
-        <td colspan="2"><button class="btn btn-primary px-4" type="button" >&nbsp; = &nbsp;</button></td>
+        <td colspan="2"><button class="btn btn-primary px-4" type="button"@onclick='Calcola'>&nbsp; = &nbsp;</button></td>
     </tr>
 </table>
 <ul>
@@ -47,43 +47,22 @@
 </ul>
 
 @code {
-    private enum Operazione { Null, Somma, Sottrazione, Moltiplicazione, Divisione }
     private string Display { get; set; } = "";
-    private bool UgualeEseguito = false;
-    private Frazione f1 = new();
-    private Frazione f2 = new();
-    private Operazione opt = Operazione.Null;
+    private bool OperazioneS = false;
+    private Frazione f1 = null;
+    private Frazione f2 = null;
+    private char opt = '\0';
     private List<string> StoricoOperazioni = new();
 
     private void Tasto(string s)
     {
-        if (!UgualeEseguito)
+        if (!OperazioneS)
         {
             Display = "";
-            UgualeEseguito = true;
+            OperazioneS = true;
         }
         Display += s;
     }
-
-    private void ScegliOperazione(Operazione op)
-    {
-        if(opt != Operazione.Null)
-        {
-            opt = op;
-            Calcola();
-        }
-        switch(op)
-        {
-            case Operazione.Somma:
-                Somma();
-                break;
-            case Operazione.Sottrazione:
-             //   Sottrazione();
-                break;
-        }
-    }
-
-
     private void Cancella()
     {
         Display = "";
@@ -94,58 +73,57 @@
     }
     private void Somma()
     {
-        opt = Operazione.Somma;
+        if (f1 is not null) Calcola();
+        opt = '+';
         f1 = new Frazione(Display);
-        Display = "";
+        OperazioneS = false;
     }
     private void Differenza()
     {
-        Calcola();
-        opt = Operazione.Sottrazione;
+        if (f1 is not null) Calcola();
+        opt = '-';
         f1 = new Frazione(Display);
-        Display = "";
+        OperazioneS = false;
     }
     private void Moltiplica()
     {
-        Calcola();
-        opt = Operazione.Moltiplicazione;
+        if (f1 is not null) Calcola();
+        opt = '*';
         f1 = new Frazione(Display);
-        Display = "";
+        OperazioneS = false;
     }
     private void Divisione()
     {
-        Calcola();
-        opt = Operazione.Divisione;
+        if (f1 is not null) Calcola();
+        opt = '/';
         f1 = new Frazione(Display);
-        Display = "";
+        OperazioneS = false;
     }
-    private void Calcola(bool op = false)
+    private void Calcola()
     {
-        UgualeEseguito = op;
+        OperazioneS = false;
         f2 = new Frazione(Display);
         Display = "";
         Frazione risultato = new();
-        //switch (opt)
-        //{
-        //    case '*':
-        //        risultato = f1 * f2;
-        //        break;
-        //    case '/':
-        //        risultato = f1 / f2;
-        //        break;
-        //    case '+':
-        //        risultato = f1 + f2;
-        //        break;
-        //    case '-':
-        //        risultato = f1 - f2;
-        //        break;
-        //    default:
-        //        risultato = f1;
-        //        return;
-        //}
+        switch (opt)
+        {
+            case '*':
+                risultato = f1 * f2;
+                break;
+            case '/':
+                risultato = f1 / f2;
+                break;
+            case '+':
+                risultato = f1 + f2;
+                break;
+            case '-':
+                risultato = f1 - f2;
+                break;
+            default:
+                risultato = f1;
+                return;
+        }
         Display = risultato.Semplifica().ToString();
         StoricoOperazioni.Add(String.Concat(f1, opt, f2, " = ", Display));
     }
-
-
 }
