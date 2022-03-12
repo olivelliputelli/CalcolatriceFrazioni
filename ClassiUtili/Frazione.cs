@@ -123,6 +123,8 @@ namespace ClassiUtili
         public static implicit operator Frazione(int n) => new Frazione(n);
         public static explicit operator Frazione(string n) => new Frazione(n);
 
+        public static Frazione ElevaFrazioneNumero(Frazione f, double n1) { return new Frazione(); }
+
         public static bool operator ==(Frazione f1, Frazione f2)
             => f1.Numeratore * f2.Denominatore == f2.Numeratore * f1.Denominatore;
         public static bool operator !=(Frazione f1, Frazione f2)
