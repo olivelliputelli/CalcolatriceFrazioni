@@ -2,7 +2,7 @@
 namespace ClassiUtili
 {
     /// <summary>
-    /// Classe utile per lavorare con frazioni.
+    /// Classe principale <c>Frazione</c>.
     /// Contiene metodi per svolgere operazioni sulle frazioni.
     /// </summary>
     public class Frazione
@@ -75,10 +75,10 @@ namespace ClassiUtili
         /// <param name="f">Una frazione.</param>
         /// <returns>Restituisce la frazione opposta.</returns>
         public static Frazione operator -(Frazione f) => new(-f.Numeratore, f.Denominatore);
-
         /// <summary>
         /// Somma due frazioni <paramref name="f1"/> e <paramref name="f2"/> 
         /// e restituisce il risultato.
+        /// es. <c>var f = f1 + f2;</c>
         /// </summary>
         /// <param name="f1">Una frazione.</param>
         /// <param name="f2">Una frazione.</param>
@@ -90,13 +90,29 @@ namespace ClassiUtili
         /// var c = a + b;
         /// </code>
         /// </example>
+        /// <see href = "https://github.com" > GitHub </see>
         public static Frazione operator +(Frazione f1, Frazione f2)
         {
             return new Frazione(
                f1.Numeratore * f2.Denominatore + f1.Denominatore * f2.Numeratore,
                f1.Denominatore * f2.Denominatore);
         }
+
+        /// <summary>
+        /// Sottrae da una frazione <paramref name="f1"/> una frazione <paramref name="f2"/> 
+        /// e restituisce il risultato.
+        /// </summary>
+        /// <param name="f1">Una frazione.</param>
+        /// <param name="f2">Una frazione.</param>
+        /// <returns>La differenza di due frazioni.</returns>
         public static Frazione operator -(Frazione f1, Frazione f2) => f1 + (-f2);
+        /// <summary>
+        /// Moltiplica due frazioni <paramref name="f1"/> e <paramref name="f2"/> 
+        /// e restituisce il risultato.
+        /// </summary>
+        /// <param name="f1">Una frazione.</param>
+        /// <param name="f2">Una frazione.</param>
+        /// <returns>Il prodotto di due frazioni.</returns>
         public static Frazione operator *(Frazione f1, Frazione f2)
         {
             return new Frazione(
@@ -138,6 +154,10 @@ namespace ClassiUtili
         public static explicit operator double(Frazione n)
             => n.Numeratore / (double)n.Denominatore;
 
+        /// <summary>
+        /// Restituisce la frazione reciproca di <paramref name="f"/>.
+        /// </summary>
+        /// <returns>La frazione reciproca.</returns>
         public Frazione Reciproca() => new(this.Denominatore, this.Numeratore);
         public static Frazione Reciproca(Frazione f) => new(f.Denominatore, f.Numeratore);
         /// <summary>
@@ -156,11 +176,12 @@ namespace ClassiUtili
         public int Segno() => Math.Sign(this.Numeratore * this.Denominatore);
 
         /// <summary>
-        /// Algoritmo di Euclide per calcolare il massimo comune divisore.
+        /// Algoritmo di Euclide per calcolare il massimo comune divisore tra due interi <paramref name="n1"/> e <paramref name="n2"/>.
         /// </summary>
         /// <param name="n1">Un intero.</param>
         /// <param name="n2">Un intero.</param>
         /// <returns>Il MCD di n1 e n2</returns>
+        /// <seealso cref="Frazione.Mcm(int, int)"/>
         private static int Mcd(int n1, int n2)
         {
             int temp;
@@ -170,6 +191,13 @@ namespace ClassiUtili
             }
             return n1;
         }
+        /// <summary>
+        /// Calcola il minimo comune multiplo tra due interi <paramref name="n1"/> e <paramref name="n2"/>
+        /// </summary>
+        /// <param name="n1">Un intero.</param>
+        /// <param name="n2">Un intero.</param>
+        /// <returns>Il mcm di n1 e n2</returns>
+        /// <seealso cref="Frazione.Mcd(int, int)"/>
         private static int Mcm(int n1, int n2)
         {
             for (int i = Math.Max(n1, n2); i < n1 * n2; i++)

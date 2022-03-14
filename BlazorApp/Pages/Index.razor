@@ -6,7 +6,7 @@
 <table style="text-align:center;">
     <caption class="caption-top">
         <div class="alert alert-secondary" role="alert" style="text-align:right;">
-            &nbsp;@Display
+            &nbsp;@Display ( @opt )
         </div>
     </caption>
     <tr>
@@ -36,7 +36,7 @@
     <tr>
         <td><button class="btn btn-dark" @onclick='(()=>Tasto("-"))'>±</button></td>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("0"))'>0</button></td>
-        <td colspan="2"><button class="btn btn-primary px-4" type="button"@onclick='Calcola'>&nbsp; = &nbsp;</button></td>
+        <td colspan="2"><button class="btn btn-primary px-4" type="button" @onclick='Calcola'>&nbsp; = &nbsp;</button></td>
     </tr>
 </table>
 <ul>
@@ -49,6 +49,7 @@
 @code {
     private string Display { get; set; } = "";
     private bool OperazioneS = false;
+    private bool OptGiaScelta = false;
     private Frazione f1 = null;
     private Frazione f2 = null;
     private char opt = '\0';
@@ -126,4 +127,5 @@
         Display = risultato.Semplifica().ToString();
         StoricoOperazioni.Add(String.Concat(f1, opt, f2, " = ", Display));
     }
+
 }
