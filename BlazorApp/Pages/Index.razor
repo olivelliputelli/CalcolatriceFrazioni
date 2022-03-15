@@ -85,27 +85,19 @@
         BloccaOperazioni = true;
         f2 = new Frazione(Display);
         Display = "";
-        Frazione risultato = new();
-        switch (opt)
+        Frazione? risultato = new();
+        risultato = opt switch
         {
-            case '*':
-                risultato = f1 * f2;
-                break;
-            case '/':
-                risultato = f1 / f2;
-                break;
-            case '+':
-                risultato = f1 + f2;
-                break;
-            case '-':
-                risultato = f1 - f2;
-                break;
-            default:
-                risultato = f1;
-                return;
+            '*' => f1 * f2,
+            '/' => f1 / f2,
+            '+' => f1 + f2,
+            '-' => f1 - f2,
+            _ => null
+        };
+        if (risultato is not null)
+        {
+            Display = risultato.Semplifica().ToString();
+            StoricoOperazioni.Add(String.Concat(f1, opt, f2, " = ", Display));
         }
-        Display = risultato.Semplifica().ToString();
-        StoricoOperazioni.Add(String.Concat(f1, opt, f2, " = ", Display));
     }
-
 }
