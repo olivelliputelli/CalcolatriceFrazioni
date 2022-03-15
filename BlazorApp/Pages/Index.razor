@@ -13,30 +13,30 @@
         <td><button class="btn btn-dark" @onclick="Cancella">C</button></td>
         <td><button class="btn btn-dark" @onclick='TornaIndietro'>←</button></td>
         <td><button class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>
-        <td><button class="btn btn-dark" @onclick='Divisione'>÷</button></td>
+        <td><button disabled="@BloccaOperazioni" class="btn btn-dark" @onclick='Divisione'>÷</button></td>
     </tr>
     <tr>
         <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("7"))'>7</button></td>
         <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("8"))'>8</button></td>
         <td><button type="button" class="btn btn-outline-dark" @onclick='(()=>Tasto("9"))'>9</button></td>
-        <td><button type="button" class="btn btn-dark" @onclick='Moltiplica'>×</button></td>
+        <td><button disabled="@BloccaOperazioni" type="button" class="btn btn-dark" @onclick='Moltiplica'>×</button></td>
     </tr>
     <tr>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("4"))'>4</button></td>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("5"))'>5</button></td>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("6"))'>6</button></td>
-        <td><button type="button" class="btn btn-dark" @onclick='Differenza'>-</button></td>
+        <td><button disabled="@BloccaOperazioni" type="button" class="btn btn-dark" @onclick='Differenza'>-</button></td>
     </tr>
     <tr>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("1"))'>1</button></td>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("2"))'>2</button></td>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("3"))'>3</button></td>
-        <td><button type="button" class="btn btn-dark" @onclick='Somma'>+</button></td>
+        <td><button disabled="@BloccaOperazioni" type="button" class="btn btn-dark" @onclick='Somma'>+</button></td>
     </tr>
     <tr>
         <td><button class="btn btn-dark" @onclick='(()=>Tasto("-"))'>±</button></td>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("0"))'>0</button></td>
-        <td colspan="2"><button class="btn btn-primary px-4" type="button" @onclick='Calcola'>&nbsp; = &nbsp;</button></td>
+        <td colspan="2"><button disabled="@BloccaOperazioni" class="btn btn-primary px-4" type="button" @onclick='Calcola'>&nbsp; = &nbsp;</button></td>
     </tr>
 </table>
 <ul>
@@ -47,6 +47,7 @@
 </ul>
 
 @code {
+    private bool BloccaOperazioni = true;
     private string Display { get; set; } = "";
     private bool OperazioneS = false;
     private bool OptGiaScelta = false;
@@ -63,6 +64,7 @@
             OperazioneS = true;
         }
         Display += s;
+        BloccaOperazioni = false;
     }
     private void Cancella()
     {
@@ -74,6 +76,7 @@
     }
     private void Somma()
     {
+        BloccaOperazioni = true;
         if (f1 is not null) Calcola();
         opt = '+';
         f1 = new Frazione(Display);
@@ -81,6 +84,7 @@
     }
     private void Differenza()
     {
+        BloccaOperazioni = true;
         if (f1 is not null) Calcola();
         opt = '-';
         f1 = new Frazione(Display);
@@ -88,6 +92,7 @@
     }
     private void Moltiplica()
     {
+        BloccaOperazioni = true;
         if (f1 is not null) Calcola();
         opt = '*';
         f1 = new Frazione(Display);
@@ -95,6 +100,7 @@
     }
     private void Divisione()
     {
+        BloccaOperazioni = true;
         if (f1 is not null) Calcola();
         opt = '/';
         f1 = new Frazione(Display);
@@ -102,6 +108,7 @@
     }
     private void Calcola()
     {
+        BloccaOperazioni = true;
         OperazioneS = false;
         f2 = new Frazione(Display);
         Display = "";

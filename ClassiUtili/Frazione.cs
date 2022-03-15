@@ -15,6 +15,9 @@ namespace ClassiUtili
         /// <summary>
         /// Denominatore della frazione
         /// </summary>
+        /// <exception cref="System.ArgumentException">
+        /// Lanciata quando il denominatore è 0.
+        /// </exception>
         public int Denominatore
         {
             get => _denominatore;
@@ -176,7 +179,7 @@ namespace ClassiUtili
         public int Segno() => Math.Sign(this.Numeratore * this.Denominatore);
 
         /// <summary>
-        /// Algoritmo di Euclide per calcolare il massimo comune divisore tra due interi <paramref name="n1"/> e <paramref name="n2"/>.
+        /// <see href="https://it.wikipedia.org/wiki/Algoritmo_di_Euclide">Algoritmo di Euclide</see> per calcolare il massimo comune divisore tra due interi <paramref name="n1"/> e <paramref name="n2"/>.
         /// </summary>
         /// <param name="n1">Un intero.</param>
         /// <param name="n2">Un intero.</param>
@@ -210,6 +213,7 @@ namespace ClassiUtili
         /// <returns>Rappresentazione di una frazione come stringa.</returns>
         public override string ToString()
         {
+            Mcd(3, 4);
             if (Numeratore == 0) return "0";
             return String.Concat((this.Segno() < 0) ? "-" : "", (Denominatore == 1) ? $"{Math.Abs(Numeratore)}"
                 : $"{Math.Abs(Numeratore)}/{Math.Abs(Denominatore)}");

@@ -9,7 +9,7 @@ var f = a + b;
 //var c = a * (Frazione)"4/3";
 //var d = 5 + 4;
 
-
+Math.Sqrt(5);
 
 Console.WriteLine("4/8" == "1/2");
 Console.WriteLine((Frazione)"4/8" == (Frazione)"1/2");
