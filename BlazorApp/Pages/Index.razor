@@ -11,8 +11,8 @@
     </caption>
     <tr>
         <td><button class="btn btn-dark" @onclick="Cancella">C</button></td>
-        <td><button class="btn btn-dark" @onclick='TornaIndietro'>←</button></td>
-        <td><button class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>
+        <td><button disabled="@BloccaOperazioni" class="btn btn-dark" @onclick='TornaIndietro'>←</button></td>
+        <td><button disabled="@BloccaOperazioni" class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>
         <td><button disabled="@BloccaOperazioni" class="btn btn-dark" @onclick='Divisione'>÷</button></td>
     </tr>
     <tr>
@@ -49,8 +49,6 @@
 @code {
     private bool BloccaOperazioni = true;
     private string Display { get; set; } = "";
-    private bool OperazioneS = false;
-    private bool OptGiaScelta = false;
     private Frazione f1 = null;
     private Frazione f2 = null;
     private char opt = '\0';
@@ -58,17 +56,18 @@
 
     private void Tasto(string s)
     {
-        if (!OperazioneS)
-        {
-            Display = "";
-            OperazioneS = true;
-        }
+        if (BloccaOperazioni) Display = "";
         Display += s;
         BloccaOperazioni = false;
     }
     private void Cancella()
     {
+        BloccaOperazioni = true;
         Display = "";
+        f1 = null;
+        f2 = null;
+        opt = '\0';
+        StoricoOperazioni = new();
     }
     private void TornaIndietro()
     {
@@ -80,7 +79,6 @@
         if (f1 is not null) Calcola();
         opt = '+';
         f1 = new Frazione(Display);
-        OperazioneS = false;
     }
     private void Differenza()
     {
@@ -88,7 +86,6 @@
         if (f1 is not null) Calcola();
         opt = '-';
         f1 = new Frazione(Display);
-        OperazioneS = false;
     }
     private void Moltiplica()
     {
@@ -96,7 +93,6 @@
         if (f1 is not null) Calcola();
         opt = '*';
         f1 = new Frazione(Display);
-        OperazioneS = false;
     }
     private void Divisione()
     {
@@ -104,12 +100,10 @@
         if (f1 is not null) Calcola();
         opt = '/';
         f1 = new Frazione(Display);
-        OperazioneS = false;
     }
     private void Calcola()
     {
         BloccaOperazioni = true;
-        OperazioneS = false;
         f2 = new Frazione(Display);
         Display = "";
         Frazione risultato = new();
