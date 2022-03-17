@@ -12,7 +12,7 @@
     <tr>
         <td><button class="btn btn-dark" @onclick="Cancella">C</button></td>
         <td><button disabled="@BloccaOperazioni" class="btn btn-dark" @onclick='TornaIndietro'>←</button></td>
-        <td><button disabled="@BloccaOperazioni" class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>
+        <td><button disabled="@(BloccaOperazioni)" class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>
         <td><button disabled="@BloccaOperazioni" class="btn btn-dark" @onclick="(()=>Operazione('/'))">÷</button></td>
     </tr>
     <tr>
@@ -34,7 +34,7 @@
         <td><button disabled="@BloccaOperazioni" type="button" class="btn btn-dark" @onclick="(()=>Operazione('+'))">+</button></td>
     </tr>
     <tr>
-        <td><button class="btn btn-dark" @onclick='(()=>Tasto("-"))'>±</button></td>
+        <td><button class="btn btn-dark" @onclick='TastoPiuMeno'>±</button></td>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("0"))'>0</button></td>
         <td colspan="2"><button disabled="@BloccaOperazioni" class="btn btn-primary px-4" type="button" @onclick='Calcola'>&nbsp; = &nbsp;</button></td>
     </tr>
@@ -47,6 +47,7 @@
 </ul>
 
 @code {
+    private bool isMeno = false;
     private bool BloccaOperazioni = true;
     private string Display { get; set; } = "";
     private Frazione f1 = null;
@@ -60,18 +61,28 @@
         Display += s;
         BloccaOperazioni = false;
     }
+    private void TastoPiuMeno()
+    {
+        isMeno = !isMeno;
+        if (isMeno)
+            Display += '-';
+        else
+            TornaIndietro();
+    }
     private void Cancella()
     {
+        isMeno = false;
         BloccaOperazioni = true;
         Display = "";
-        f1 = null;
-        f2 = null;
+        f1 = null; f2 = null;
         opt = '\0';
-        StoricoOperazioni = new();
+        StoricoOperazioni.Clear();
     }
     private void TornaIndietro()
     {
-        if (Display.Length > 0) Display = Display.Substring(0, Display.Length - 1);
+        if (Display.Length == 1) BloccaOperazioni = true;
+        if (Display.Length > 0)
+            Display = Display.Substring(0, Display.Length - 1);
     }
     private void Operazione(char op)
     {

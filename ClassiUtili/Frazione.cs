@@ -141,14 +141,9 @@ namespace ClassiUtili
         public static Frazione operator --(Frazione f) => f - 1;
         public static implicit operator Frazione(int n) => new Frazione(n);
         public static explicit operator Frazione(string n) => new Frazione(n);
-
-        public static Frazione ElevaFrazioneNumero(Frazione f, double n1) { return new Frazione(); }
-
         public static bool operator ==(Frazione f1, Frazione f2)
             => f1.Numeratore * f2.Denominatore == f2.Numeratore * f1.Denominatore;
-        public static bool operator !=(Frazione f1, Frazione f2)
-        => !(f1 == f2);
-
+        public static bool operator !=(Frazione f1, Frazione f2) => !(f1 == f2);
         public static bool operator <(Frazione f1, Frazione f2)
         {
             if (f1.Numeratore * f2.Denominatore < f2.Numeratore * f1.Denominatore) return true;
@@ -159,7 +154,14 @@ namespace ClassiUtili
             if (f1 == f2) return false;
             return !(f1 < f2);
         }
-
+        /// <summary>
+        /// Confronta <paramref name="f1" /> e <paramref name="f2" />. 
+        /// </summary>
+        /// <param name="f1">Una frazione.</param>
+        /// <param name="f2">Una frazione.</param>
+        /// <returns>true se f1 &lt;= f2 false altrimenti.</returns>
+        public static bool operator <=(Frazione f1, Frazione f2) => !(f1 > f2);
+        public static bool operator >=(Frazione f1, Frazione f2) => !(f1 < f2);
         /// <summary>
         /// Necessario per poter operare sulla forma come numero razionale 
         /// delle frazioni.
@@ -167,7 +169,6 @@ namespace ClassiUtili
         /// <param name="n"></param>
         public static explicit operator double(Frazione n)
             => n.Numeratore / (double)n.Denominatore;
-
         /// <summary>
         /// Restituisce la frazione reciproca di <paramref name="f"/>.
         /// </summary>
@@ -188,7 +189,6 @@ namespace ClassiUtili
         /// </summary>
         /// <returns>+1 positiva, -1 negativa oppure 0</returns>
         public int Segno() => Math.Sign(this.Numeratore * this.Denominatore);
-
         /// <summary>
         /// <see href="https://it.wikipedia.org/wiki/Algoritmo_di_Euclide">Algoritmo di Euclide</see> per calcolare il massimo comune divisore tra due interi <paramref name="n1"/> e <paramref name="n2"/>.
         /// </summary>
@@ -229,6 +229,5 @@ namespace ClassiUtili
             return String.Concat((this.Segno() < 0) ? "-" : "", (Denominatore == 1) ? $"{Math.Abs(Numeratore)}"
                 : $"{Math.Abs(Numeratore)}/{Math.Abs(Denominatore)}");
         }
-
     }
 }
