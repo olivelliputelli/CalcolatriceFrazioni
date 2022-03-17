@@ -149,6 +149,17 @@ namespace ClassiUtili
         public static bool operator !=(Frazione f1, Frazione f2)
         => !(f1 == f2);
 
+        public static bool operator <(Frazione f1, Frazione f2)
+        {
+            if (f1.Numeratore * f2.Denominatore < f2.Numeratore * f1.Denominatore) return true;
+            return false;
+        }
+        public static bool operator >(Frazione f1, Frazione f2)
+        {
+            if (f1 == f2) return false;
+            return !(f1 < f2);
+        }
+
         /// <summary>
         /// Necessario per poter operare sulla forma come numero razionale 
         /// delle frazioni.

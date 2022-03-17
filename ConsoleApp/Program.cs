@@ -13,6 +13,7 @@ Math.Sqrt(5);
 
 Console.WriteLine("4/8" == "1/2");
 Console.WriteLine((Frazione)"4/8" == (Frazione)"1/2");
+Console.WriteLine((Frazione)"4/8" < (Frazione)"1/2");
 
 //var b = new Frazione(1, 2);
 //Console.WriteLine(-a);   // output: -5 / 4
