@@ -34,20 +34,19 @@
         <td><button disabled="@BloccaOperazioni" type="button" class="btn btn-dark" @onclick="(()=>Operazione('+'))">+</button></td>
     </tr>
     <tr>
-        <td><button class="btn btn-dark" @onclick='TastoPiuMeno'>±</button></td>
+        <td><button class="btn btn-dark" @onclick='(()=>Tasto("-"))'>±</button></td>
         <td><button class="btn btn-outline-dark" @onclick='(()=>Tasto("0"))'>0</button></td>
         <td colspan="2"><button disabled="@BloccaOperazioni" class="btn btn-primary px-4" type="button" @onclick='Calcola'>&nbsp; = &nbsp;</button></td>
     </tr>
 </table>
-<ul>
+<ul class="list-group">
     @foreach (var item in StoricoOperazioni)
     {
-        <li>@item</li>
+        <li class="list-group-item">@item</li>
     }
 </ul>
 
 @code {
-    private bool isMeno = false;
     private bool BloccaOperazioni = true;
     private string Display { get; set; } = "";
     private Frazione f1 = null;
@@ -61,17 +60,8 @@
         Display += s;
         BloccaOperazioni = false;
     }
-    private void TastoPiuMeno()
-    {
-        isMeno = !isMeno;
-        if (isMeno)
-            Display += '-';
-        else
-            TornaIndietro();
-    }
     private void Cancella()
     {
-        isMeno = false;
         BloccaOperazioni = true;
         Display = "";
         f1 = null; f2 = null;
@@ -110,4 +100,4 @@
             StoricoOperazioni.Add(String.Concat(f1, opt, f2, " = ", Display));
         }
     }
-}
+    }
