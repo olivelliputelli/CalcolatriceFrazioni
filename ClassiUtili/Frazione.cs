@@ -5,6 +5,11 @@ namespace ClassiUtili
     /// Classe principale <c>Frazione</c>.
     /// Contiene metodi per svolgere operazioni sulle frazioni.
     /// </summary>
+    /// <seealso href="https://youtu.be/WDTLHUvrZp4"/>
+    /// <seealso href="https://youtu.be/DCtb8NVnBQM"/>
+    /// <seealso href="https://youtu.be/1uGNUOTxp7o"/>
+    /// <seealso href="https://youtu.be/Rv-16CYT65U"/>
+    /// <seealso href="https://youtu.be/BA96EyQZESI"/>
     public class Frazione
     {
         /// <summary>
