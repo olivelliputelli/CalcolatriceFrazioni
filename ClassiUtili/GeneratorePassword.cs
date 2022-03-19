@@ -34,10 +34,18 @@
             }
         }
 
-        public GeneratorePassword(TipoPassword tipoPassword = TipoPassword.Cifre)
+        public GeneratorePassword(TipoPassword tipoPassword = TipoPassword.Lettere)
         {
+            SetTipoPassword(tipoPassword);
+        }
+        public void SetTipoPassword(TipoPassword tipoPassword = TipoPassword.Lettere)
+        {
+            Alfabeto = "0123456789";
             if (tipoPassword == TipoPassword.Lettere)
+            {
+                Alfabeto = "0123456789";
                 for (char i = 'A'; i <= 'Z'; i++) Alfabeto += $"{(char)i}{(char)(i + 32)}";
+            }
             else if (tipoPassword == TipoPassword.CaratteriSpeciali)
             {
                 alfabeto = "";
