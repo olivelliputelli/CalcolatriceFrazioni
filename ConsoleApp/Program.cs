@@ -5,9 +5,10 @@
 //    Console.WriteLine($"{i}\t{(char)i}");
 //}
 
-GeneratorePassword g1 = new(TipoPassword.Cifre) { LunghezzaMinima = 6 };
-GeneratorePassword g2 = new(TipoPassword.Lettere) { LunghezzaMinima = 6};
+GeneratorePassword g1 = new(TipoPassword.Cifre) { LunghezzaMinima = 3 };
+GeneratorePassword g2 = new(TipoPassword.Lettere) { LunghezzaMinima = 6 };
 GeneratorePassword g3 = new(TipoPassword.CaratteriSpeciali) { LunghezzaMinima = 6 };
+
 
 
 Console.WriteLine(g1.Alfabeto);

@@ -34,7 +34,7 @@
             }
         }
 
-        public GeneratorePassword(TipoPassword tipoPassword)
+        public GeneratorePassword(TipoPassword tipoPassword = TipoPassword.Cifre)
         {
             if (tipoPassword == TipoPassword.Lettere)
                 for (char i = 'A'; i <= 'Z'; i++) Alfabeto += $"{(char)i}{(char)(i + 32)}";
@@ -43,13 +43,14 @@
                 alfabeto = "";
                 for (int i = 32; i <= 126; i++) Alfabeto += $"{(char)i}";
             }
-
         }
 
-        public string NuovaPassword(int lunghezza)
+        public string NuovaPassword(int lunghezza = 0)
         {
+            if (lunghezza == 0) lunghezza = LunghezzaMinima;
+
             if (lunghezza < LunghezzaMinima)
-                throw new GeneratorePasswordException("Password troppo corta.");
+                throw new GeneratorePasswordException($"Password troppo corta. Almeno {LunghezzaMinima} caratteri.");
             string psw = "";
             for (int i = 0; i < lunghezza; i++)
                 psw += alfabeto[g.Next(0, alfabeto.Length)];
@@ -58,7 +59,9 @@
     }
     public enum TipoPassword
     {
-        Cifre, Lettere, CaratteriSpeciali
+        Cifre,
+        Lettere, // lettere + cifre
+        CaratteriSpeciali // lettere + cifre + caratteri speciali
     }
     class GeneratorePasswordException : Exception
     {
