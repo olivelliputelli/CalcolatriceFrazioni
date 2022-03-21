@@ -60,6 +60,20 @@
                 psw += alfabeto[g.Next(0, alfabeto.Length)];
             return psw;
         }
+        public static bool AlmenoUnaLetteraMaiuscola(string str)
+        {
+            foreach (var c in str)
+                if (char.IsUpper(c)) return true;
+            return false;
+        }
+        public static bool AlmenoUnCarattereSpeciale(string str)
+        {
+            string cc = "!#$%&'()*+,-./:;<=>?[]^_{|}~";
+            foreach (var c in str)
+                if (cc.Contains(c)) return true;
+            return false;
+        }
+       
     }
     public enum TipoPassword
     {
