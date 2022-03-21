@@ -8,6 +8,7 @@
     /// <seealso href="https://youtu.be/n6R2AE3Htj0"/>
     public class GeneratorePassword
     {
+        private const string Caratteri = "!#$%&'()*+,-./:;<=>?[]^_{|}~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         private static readonly Random g = new Random();
         private string alfabeto = "0123456789";
         public string Alfabeto
@@ -40,17 +41,12 @@
         }
         public void SetTipoPassword(TipoPassword tipoPassword = TipoPassword.Lettere)
         {
-            Alfabeto = "0123456789";
-            if (tipoPassword == TipoPassword.Lettere)
-            {
-                Alfabeto = "0123456789";
-                for (char i = 'A'; i <= 'Z'; i++) Alfabeto += $"{(char)i}{(char)(i + 32)}";
-            }
-            else if (tipoPassword == TipoPassword.CaratteriSpeciali)
-            {
-                alfabeto = "";
-                for (int i = 32; i <= 126; i++) Alfabeto += $"{(char)i}";
-            }
+            if (tipoPassword == TipoPassword.Cifre)
+                Alfabeto = Caratteri.Substring(Caratteri.IndexOf('0'));
+            else if (tipoPassword == TipoPassword.Lettere)
+                Alfabeto = Caratteri.Substring(Caratteri.IndexOf('A'));
+            else
+                Alfabeto = Caratteri;
         }
 
         public string NuovaPassword(int lunghezza = 0)
