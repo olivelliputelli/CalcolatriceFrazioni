@@ -8,7 +8,9 @@
     /// <seealso href="https://youtu.be/n6R2AE3Htj0"/>
     public class GeneratorePassword
     {
-        private const string Caratteri = "!#$%&'()*+,-./:;<=>?[]^_{|}~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        // le const sono sempre anche static.
+        // mantenere la parte finale dopo la 'A' costante..
+        private const string Caratteri = "锕!#$%&'()*+,-./:;<=>?[]^_{|}~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         private static readonly Random g = new Random();
         private string alfabeto = "0123456789";
         public string Alfabeto
@@ -48,7 +50,6 @@
             else
                 Alfabeto = Caratteri;
         }
-
         public string NuovaPassword(int lunghezza = 0)
         {
             if (lunghezza == 0) lunghezza = LunghezzaMinima;
@@ -68,12 +69,11 @@
         }
         public static bool AlmenoUnCarattereSpeciale(string str)
         {
-            string cc = "!#$%&'()*+,-./:;<=>?[]^_{|}~";
+            string cc = Caratteri[0..Caratteri.IndexOf('~')]; // "!#$%&'()*+,-./:;<=>?[]^_{|}~";
             foreach (var c in str)
                 if (cc.Contains(c)) return true;
             return false;
         }
-       
     }
     public enum TipoPassword
     {

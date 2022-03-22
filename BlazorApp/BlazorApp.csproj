@@ -10,4 +10,10 @@
     <ProjectReference Include="..\ClassiUtili\ClassiUtili.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="AlfabetoPersonalizzato.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
