@@ -10,9 +10,10 @@
     {
         // le const sono sempre anche static.
         // mantenere la parte finale dopo la 'A' costante..
-        private const string Caratteri = "锕!#$%&'()*+,-./:;<=>?[]^_{|}~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        private const string Caratteri = "!#$%&'()*+,-./:;<=>?[]^_{|}~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         private static readonly Random g = new Random();
         private string alfabeto = "0123456789";
+        public string PathAlfabeto { get; set; } = "AlfabetoPersonalizzato.txt";
         public string Alfabeto
         {
             get => alfabeto;
@@ -43,11 +44,13 @@
         }
         public void SetTipoPassword(TipoPassword tipoPassword = TipoPassword.Lettere)
         {
-            if (tipoPassword == TipoPassword.Cifre)
+            if (tipoPassword == TipoPassword.AlfabetoPersonalizzato)
+                Alfabeto = File.ReadAllText(PathAlfabeto);
+            else if (tipoPassword == TipoPassword.Cifre)
                 Alfabeto = Caratteri.Substring(Caratteri.IndexOf('0'));
             else if (tipoPassword == TipoPassword.Lettere)
                 Alfabeto = Caratteri.Substring(Caratteri.IndexOf('A'));
-            else
+            else if (tipoPassword == TipoPassword.CaratteriSpeciali)
                 Alfabeto = Caratteri;
         }
         public string NuovaPassword(int lunghezza = 0)
@@ -77,9 +80,10 @@
     }
     public enum TipoPassword
     {
+        AlfabetoPersonalizzato, // alfabeto modificabile salvato in un file.
         Cifre,
-        Lettere, // lettere + cifre
-        CaratteriSpeciali // lettere + cifre + caratteri speciali
+        Lettere, // lettere + cifre.
+        CaratteriSpeciali // lettere + cifre + caratteri speciali.
     }
     class GeneratorePasswordException : Exception
     {
