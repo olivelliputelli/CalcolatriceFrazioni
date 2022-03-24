@@ -8,6 +8,8 @@
     /// <seealso href="https://youtu.be/n6R2AE3Htj0"/>
     public class GeneratorePassword
     {
+        private static int sommaLunghezzePassword = 0;
+        private static int numeroPasswordGenerate = 0;
         // le const sono sempre anche static.
         // mantenere la parte finale dopo la 'A' costante..
         private const string Caratteri = "!#$%&'()*+,-./:;<=>?[]^_{|}~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -37,11 +39,14 @@
                     lunghezzaMinima = value;
             }
         }
-
         public GeneratorePassword(TipoPassword tipoPassword = TipoPassword.Lettere)
         {
             SetTipoPassword(tipoPassword);
         }
+        /// <summary>
+        /// Imposta il tipo della password.
+        /// </summary>
+        /// <param name="tipoPassword">Valore di tipo TipoPassword.</param>
         public void SetTipoPassword(TipoPassword tipoPassword = TipoPassword.Lettere)
         {
             if (tipoPassword == TipoPassword.AlfabetoPersonalizzato)
@@ -62,7 +67,13 @@
             string psw = "";
             for (int i = 0; i < lunghezza; i++)
                 psw += alfabeto[g.Next(0, alfabeto.Length)];
+            sommaLunghezzePassword += lunghezza;
+            numeroPasswordGenerate++;
             return psw;
+        }
+        public static double LunghezzaPasswordMedia()
+        {
+            return sommaLunghezzePassword / (double)numeroPasswordGenerate;
         }
         public static bool AlmenoUnaLetteraMaiuscola(string str)
         {
