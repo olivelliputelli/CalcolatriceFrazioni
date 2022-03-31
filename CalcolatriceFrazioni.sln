@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassiUtili", "ClassiUtili\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{33E4E1FF-1301-4E74-96D8-98B44FEFF819}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassiUtili.Test", "ClassiUtili.Test\ClassiUtili.Test.csproj", "{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassiUtili.Test", "ClassiUtili.Test\ClassiUtili.Test.csproj", "{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

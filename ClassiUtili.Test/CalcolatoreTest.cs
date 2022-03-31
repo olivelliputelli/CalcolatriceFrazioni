@@ -42,9 +42,9 @@ namespace ClassiUtili.Test
         [InlineData(-7, 2, -14)]
         public void Per_DovrebbeCalcolareSempliciValori(double a, double b, double expected)
         {
-            // Arrange (setup iniziale)
+            // Arrange (setup iniziale o precondizioni)
 
-            // Act (funzionalità da testare)
+            // Act (funzionalità da testare o azioni)
             double actual = Calcolatore.Per(a, b);
 
             // Assert (risultato aspettato)
@@ -53,10 +53,10 @@ namespace ClassiUtili.Test
         [Fact]
         public void Meno_DovrebbeCalcolareDifferenzaSempliciValori()
         {
-            // Arrange (setup iniziale)
+            // Arrange (setup iniziale o precondizioni)
             double expected = -4;
 
-            // Act (funzionalità da testare)
+            // Act (funzionalità da testare o azioni)
             double actual = Calcolatore.Meno(2, 6);
 
             // Assert (risultato aspettato)
@@ -70,7 +70,7 @@ namespace ClassiUtili.Test
             // BL Business Logic
             double expected = 0;
 
-            // Act (funzionalità da testare)
+            // Act (funzionalità da testare o azioni)
             double actual = Calcolatore.Diviso(2, 0);
 
             // Assert (risultato aspettato)
