@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassiUtili", "ClassiUtili\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{33E4E1FF-1301-4E74-96D8-98B44FEFF819}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassiUtili.Test", "ClassiUtili.Test\ClassiUtili.Test.csproj", "{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,26 @@ Global
 		{33E4E1FF-1301-4E74-96D8-98B44FEFF819}.Release|x64.Build.0 = Release|Any CPU
 		{33E4E1FF-1301-4E74-96D8-98B44FEFF819}.Release|x86.ActiveCfg = Release|Any CPU
 		{33E4E1FF-1301-4E74-96D8-98B44FEFF819}.Release|x86.Build.0 = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|ARM.Build.0 = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|x64.Build.0 = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Debug|x86.Build.0 = Debug|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|ARM.ActiveCfg = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|ARM.Build.0 = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|ARM64.Build.0 = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|x64.ActiveCfg = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|x64.Build.0 = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|x86.ActiveCfg = Release|Any CPU
+		{8053CC8D-3BA8-4F3E-ABC5-02C694B05AC9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
