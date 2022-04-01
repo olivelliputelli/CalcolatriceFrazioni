@@ -14,5 +14,10 @@
             if (n2 == 0) return 0;
             return n1 / n2;
         }
+        public static double Modulo(double n)
+        {
+            if (n < 0) return -n;
+            return n;
+        }
     }
 }
