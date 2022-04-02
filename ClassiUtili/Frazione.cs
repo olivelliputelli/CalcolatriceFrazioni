@@ -227,6 +227,21 @@ namespace ClassiUtili
                 if (i % n1 == 0 && i % n2 == 0) return i;
             return n1 * n2;
         }
+
+        public bool IsDecimaleFinito()
+        {
+            var fs = this.Semplifica();
+            if (fs.Denominatore % 2 == 0 || fs.Denominatore % 5 == 0)
+                return true;
+            return false;
+        }
+
+        public bool IsDecimalePeriodico()
+        {
+            Frazione f = this.Semplifica();
+            
+            throw new NotImplementedException();
+        }
         /// <summary>
         /// Overload del metodo.
         /// </summary>

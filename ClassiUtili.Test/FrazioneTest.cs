@@ -4,8 +4,57 @@ using System;
 
 namespace ClassiUtili.Test
 {
+   
     public class FrazioneTest
     {
+        [Theory]
+        [InlineData(100, 15)]
+        [InlineData(-70, 22)]
+        [InlineData(10, 3)]
+        [InlineData(-100, -12)]
+        public void IsDecimalePeriodico_DovrebbeEssereVero(int n, int d)
+        {
+            // Arrange (setup iniziale o precondizioni)
+            Frazione f = new(n, d);
+
+            // Act (funzionalità da testare o azioni)
+            bool actual = f.IsDecimalePeriodico();
+
+            // Assert (risultato aspettato)
+            // Equal, True, False, Throws<TipoException>
+            Assert.True(actual);
+        }
+        [Theory]
+        [InlineData(3, 25)]
+        [InlineData(3, 2)]
+        [InlineData(-30, 20)]
+        [InlineData(-6, -40)]
+        public void IsDecimaleFinito_DovrebbeEssereVero(int n, int d)
+        {
+            // Arrange (setup iniziale o precondizioni)
+            Frazione f = new(n, d);
+
+            // Act (funzionalità da testare o azioni)
+            bool actual = f.IsDecimaleFinito();
+
+            // Assert (risultato aspettato)
+            Assert.True(actual);
+        }
+        [Theory]
+        [InlineData(33,14)]
+        [InlineData(3, 1)]
+        [InlineData(700, 70)]
+        public void IsDecimaleFinito_DovrebbeEssereFalso(int n, int d)
+        {
+            // Arrange (setup iniziale o precondizioni)
+            Frazione f = new(n, d);
+
+            // Act (funzionalità da testare o azioni)
+            bool actual = f.IsDecimaleFinito();
+
+            // Assert (risultato aspettato)
+            Assert.False(actual);
+        }
         [Fact]
         public void OpeatorePiù_DovrebbeCalcolareFrazioneEIntero()
         {
