@@ -150,7 +150,7 @@ namespace ClassiUtili
             => f1.Numeratore * f2.Denominatore == f2.Numeratore * f1.Denominatore;
         public override bool Equals(object? obj)
         {
-            return (Frazione)obj == this;    
+            return (Frazione)obj == this;
         }
         public static bool operator !=(Frazione f1, Frazione f2) => !(f1 == f2);
         public static bool operator <(Frazione f1, Frazione f2)
@@ -230,17 +230,27 @@ namespace ClassiUtili
 
         public bool IsDecimaleFinito()
         {
-            var fs = this.Semplifica();
-            if (fs.Denominatore % 2 == 0 || fs.Denominatore % 5 == 0)
-                return true;
-            return false;
+            var d = Math.Abs(this.Semplifica().Denominatore);
+            do
+            {
+                if (d % 2 == 0)
+                    d /= 2;
+                else if (d % 5 == 0)
+                    d /= 5;
+                else
+                    return false;
+            } while (d != 1);
+            return true;
         }
 
         public bool IsDecimalePeriodico()
         {
             Frazione f = this.Semplifica();
-            
-            throw new NotImplementedException();
+            if (f.IsDecimaleFinito())
+                return false;
+            if (f.Denominatore == 1)
+                return false;
+            return true;
         }
         /// <summary>
         /// Overload del metodo.
