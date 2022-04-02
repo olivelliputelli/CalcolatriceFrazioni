@@ -228,8 +228,13 @@ namespace ClassiUtili
             return n1 * n2;
         }
 
+        /// <summary>
+        /// Restituisce <c>true</c> se la frazione è decimale finita.
+        /// </summary>
+        /// <returns><c>true</c> se la frazione è decimale finita; <c>false</c> altrimenti.</returns>
         public bool IsDecimaleFinito()
         {
+            if(this.Numeratore == 0) return false;   
             var d = Math.Abs(this.Semplifica().Denominatore);
             do
             {
@@ -242,7 +247,10 @@ namespace ClassiUtili
             } while (d != 1);
             return true;
         }
-
+        /// <summary>
+        /// Restituisce <c>true</c> se la frazione è decimale periodico.
+        /// </summary>
+        /// <returns><c>true</c> se la frazione è decimale periodico; <c>false</c> altrimenti.</returns>
         public bool IsDecimalePeriodico()
         {
             Frazione f = this.Semplifica();

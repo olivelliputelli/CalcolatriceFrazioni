@@ -97,7 +97,12 @@
         if (risultato is not null)
         {
             Display = risultato.Semplifica().ToString();
-            StoricoOperazioni.Add(String.Concat(f1, opt, f2, " = ", Display));
+            string output = String.Concat(f1, opt, f2, " = ", Display);
+            if (risultato.IsDecimaleFinito())
+                output += " (decimale finito) ";
+            else if (risultato.IsDecimalePeriodico())
+                output += " (decimale periodico) ";
+            StoricoOperazioni.Add(output);
         }
     }
     }

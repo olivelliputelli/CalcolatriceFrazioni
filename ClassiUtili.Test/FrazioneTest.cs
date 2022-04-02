@@ -12,7 +12,7 @@ namespace ClassiUtili.Test
         [InlineData(-70, 22)]
         [InlineData(10, 3)]
         [InlineData(-100, -12)]
-        [InlineData(0, -12)]
+        [InlineData(1, -12)]
         public void IsDecimalePeriodico_DovrebbeEssereVero(int n, int d)
         {
             // Arrange (setup iniziale o precondizioni)
@@ -29,6 +29,7 @@ namespace ClassiUtili.Test
         [InlineData(66, -33)]
         [InlineData(3, 2)]
         [InlineData(11, -22)]
+        [InlineData(0, -12)]
         public void IsDecimalePeriodico_DovrebbeEssereFalso(int n, int d)
         {
             // Arrange (setup iniziale o precondizioni)
@@ -49,7 +50,7 @@ namespace ClassiUtili.Test
         {
             // Arrange (setup iniziale o precondizioni)
             Frazione f = new(n, d);
-
+            char.IsAscii('d');
             // Act (funzionalità da testare o azioni)
             bool actual = f.IsDecimaleFinito();
 
