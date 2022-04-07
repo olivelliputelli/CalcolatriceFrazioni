@@ -66,6 +66,51 @@ namespace ClassiUtili
             else
                 Denominatore = int.Parse(elementi[1]); // "2/7"
         }
+
+        public Frazione(double decimaleFinito)
+        {
+            // 4.654 => 4654/1000 => semplifica
+            double d = decimaleFinito; // RICORDARSI: da togliere!!
+            int c = 0;
+            while (d != Math.Truncate(d))
+            {
+                d *= 10; c++;
+            }
+            Frazione f = new((int)d, (int)Math.Pow(10, c));
+            Numeratore = f.Semplifica().Numeratore;
+            Denominatore = f.Semplifica().Denominatore;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="decimalePeriodico"></param>
+        /// <param name="periodo">Numero cifre del periodo.</param>
+        public Frazione(double decimalePeriodico, int periodo)
+        {
+            Frazione f = new();
+
+            int nSenzaVirgola = NumeroSenzaVirgolaENumeroCifre(decimalePeriodico, out int c);
+            int antiPeriodo = c - periodo;
+            int daSottrarre = (int)Math.Truncate(decimalePeriodico * Math.Pow(10, antiPeriodo));
+            f.Numeratore = nSenzaVirgola - daSottrarre;
+            string den = "";
+            for (int i = 0; i < periodo; i++) den += "9";
+            for (int i = 0; i < antiPeriodo; i++) den += "0";
+            f.Denominatore = int.Parse(den);
+
+            Numeratore = f.Semplifica().Numeratore;
+            Denominatore = f.Semplifica().Denominatore;
+        }
+        private int NumeroSenzaVirgolaENumeroCifre(double n, out int numeroCifre)
+        {
+            int c = 0;
+            while (n != Math.Truncate(n))
+            {
+                n *= 10; c++;
+            }
+            numeroCifre = (int)c;
+            return (int)n;
+        }
         /// <summary>
         /// Costruisce la frazione 0/1.
         /// </summary>
@@ -234,8 +279,8 @@ namespace ClassiUtili
         /// <returns><c>true</c> se la frazione è decimale finita; <c>false</c> altrimenti.</returns>
         public bool IsDecimaleFinito()
         {
-            if(this.Numeratore == 0) return false;   
-            var d = Math.Abs(this.Semplifica().Denominatore);
+            if (this.Numeratore == 0) return false;
+            var d = this.Semplifica().Denominatore;
             do
             {
                 if (d % 2 == 0)
@@ -244,7 +289,7 @@ namespace ClassiUtili
                     d /= 5;
                 else
                     return false;
-            } while (d != 1);
+            } while (Math.Abs(d) != 1);
             return true;
         }
         /// <summary>

@@ -57,7 +57,7 @@ namespace ClassiUtili.Test
             Assert.True(actual);
         }
         [Theory]
-        [InlineData(33,14)]
+        [InlineData(33, 14)]
         [InlineData(3, 1)]
         [InlineData(700, 70)]
         public void IsDecimaleFinito_DovrebbeEssereFalso(int n, int d)
@@ -118,7 +118,38 @@ namespace ClassiUtili.Test
             // Assert (risultato aspettato)
             Assert.Equal(expected, actual);
         }
+        [Theory]
+        [InlineData(3.5, 7, 2)]
+        [InlineData(0.4, 2, 5)]
+        [InlineData(-0.01, -1, 100)]
+        [InlineData(30, 30, 1)]
+        public void Frazione_DovrebbeCreareFrazioneDaDecimaleFinito(double decimaleFinito, int expectedN, int expectedD)
+        {
+            // Arrange (setup iniziale o precondizioni)
 
+            Frazione expected = new(decimaleFinito);
+            // Act (funzionalità da testare o azioni)
+            Frazione actual = new(expectedN, expectedD);
+
+            // Assert (risultato aspettato)
+            Assert.Equal(expected, actual);
+        }
+        [Theory]
+        [InlineData(0.1, 1, 1, 9)]
+        [InlineData(0.001, 3, 1, 999)]
+        [InlineData(1.23456, 3, 123333, 99900)]
+        [InlineData(2.23, 1, 67, 30)]
+        public void Frazione_DovrebbeCreareFrazioneDaDecimalePeriodico(double decimalePeriodico, int periodo, int expectedN, int expectedD)
+        {
+            // Arrange (setup iniziale o precondizioni)
+
+            Frazione expected = new(decimalePeriodico, periodo);
+            // Act (funzionalità da testare o azioni)
+            Frazione actual = new(expectedN, expectedD);
+
+            // Assert (risultato aspettato)
+            Assert.Equal(expected, actual);
+        }
 
         [Fact]
         public void Frazione_DenominatoreDiversoDaZeroDovrebbeFunzionare()
