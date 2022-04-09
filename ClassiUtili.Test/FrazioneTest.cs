@@ -119,6 +119,28 @@ namespace ClassiUtili.Test
             Assert.Equal(expected, actual);
         }
         [Theory]
+        [InlineData("3,5", 7, 2)]
+        [InlineData("0,4", 2, 5)]
+        [InlineData("-0,01", -1, 100)]
+        [InlineData("30", 30, 1)]
+        [InlineData("0,1_1", 1, 9)]
+        [InlineData("0,001_3", 1, 999)]
+        [InlineData("1,23456_3", 123333, 99900)]
+        [InlineData("2.23_1", 67, 30)]
+        [InlineData("3/2", 3, 2)]
+        [InlineData("3", 3, 1)]
+        public void Parse_DovrebbeCreareFrazioneDaStringa(string s, int expectedN, int expectedD)
+        {
+            // Arrange (setup iniziale o precondizioni)
+
+            Frazione expected = Frazione.Parse(s);
+            // Act (funzionalità da testare o azioni)
+            Frazione actual = new(expectedN, expectedD);
+
+            // Assert (risultato aspettato)
+            Assert.Equal(expected, actual);
+        }
+        [Theory]
         [InlineData(3.5, 7, 2)]
         [InlineData(0.4, 2, 5)]
         [InlineData(-0.01, -1, 100)]

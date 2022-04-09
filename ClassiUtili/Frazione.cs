@@ -57,16 +57,40 @@ namespace ClassiUtili
         {
             if (String.IsNullOrWhiteSpace(s)) return;
 
-            string[] elementi = s.Split('/'); // ["2","7"] oppure ["5"]
+            if (s.Contains('_')) // 123,4_1, 12,4567_2, 1,23, 1,2345_1
+            {
+                string[] elem = s.Split('_');
+                var f = new Frazione(double.Parse(elem[0]), int.Parse(elem[1]));
+                Numeratore = f.Numeratore;
+                Denominatore = f.Denominatore;
+            }
+            else if (s.Contains(','))
+            {
+                var f = new Frazione(double.Parse(s));
+                Numeratore = f.Numeratore;
+                Denominatore = f.Denominatore;
+            }
 
-            Numeratore = int.Parse(elementi[0]);
+            if (s.Contains('/'))
+            {
+                string[] elementi = s.Split('/'); // ["2","7"] oppure ["5"]
 
-            if (elementi.Length == 1) // "5"
-                Denominatore = 1;
-            else
-                Denominatore = int.Parse(elementi[1]); // "2/7"
+                Numeratore = int.Parse(elementi[0]);
+
+                if (elementi.Length == 1) // "5"
+                    Denominatore = 1;
+                else
+                    Denominatore = int.Parse(elementi[1]); // "2/7"
+            }
+
         }
 
+        public static Frazione Parse(string s)
+        {
+          
+            throw new NotImplementedException();
+        }
+            
         public Frazione(double decimaleFinito)
         {
             // 4.654 => 4654/1000 => semplifica
@@ -104,12 +128,10 @@ namespace ClassiUtili
         private int NumeroSenzaVirgolaENumeroCifre(double n, out int numeroCifre)
         {
             int c = 0;
-            while (n != Math.Truncate(n))
-            {
-                n *= 10; c++;
-            }
-            numeroCifre = (int)c;
-            return (int)n;
+            string nS = n.ToString();
+            numeroCifre = nS.Substring(nS.IndexOf(',')).Length - 1;
+
+            return (int)(n * Math.Pow(10, numeroCifre));
         }
         /// <summary>
         /// Costruisce la frazione 0/1.
