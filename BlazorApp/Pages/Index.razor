@@ -79,11 +79,13 @@
         BloccaOperazioni = true;
         if (f1 is not null) Calcola();
         opt = op;
-        f1 = new Frazione(Display);
+        f1 = Frazione.Parse(Display);
+        // f1 = new Frazione(Display);
     }
     private void Calcola()
     {
-        f2 = new Frazione(Display);
+        f2 = Frazione.Parse(Display);
+        // f2 = new Frazione(Display);
         Display = "";
         Frazione? risultato = new();
         risultato = opt switch

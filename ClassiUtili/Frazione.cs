@@ -90,7 +90,12 @@ namespace ClassiUtili
           
             throw new NotImplementedException();
         }
-            
+        public static bool TryParse(string s, out Frazione result)
+        {
+
+            throw new NotImplementedException();
+        }
+
         public Frazione(double decimaleFinito)
         {
             // 4.654 => 4654/1000 => semplifica
