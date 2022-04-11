@@ -87,8 +87,32 @@ namespace ClassiUtili
 
         public static Frazione Parse(string s)
         {
-          
-            throw new NotImplementedException();
+            if (s.Contains(','))
+            {
+                if (s.Contains('_'))
+                {
+                    string[] s2 = s.Split('_');
+                    double numero = double.Parse(s2[0]);
+                    int periodo = int.Parse(s2[1]);
+                    return new Frazione(numero, periodo);
+                }
+                else
+                {
+                    return new Frazione(double.Parse(s));
+                }
+            }
+            else if (s.Contains('/'))
+            {
+                return new Frazione(s);
+            }
+            else if (int.TryParse(s, out int n))
+            {
+                return new Frazione(n);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
         public static bool TryParse(string s, out Frazione result)
         {
@@ -120,8 +144,10 @@ namespace ClassiUtili
 
             int nSenzaVirgola = NumeroSenzaVirgolaENumeroCifre(decimalePeriodico, out int c);
             int antiPeriodo = c - periodo;
+            // DA SISTEMARE
             int daSottrarre = (int)Math.Truncate(decimalePeriodico * Math.Pow(10, antiPeriodo));
-            f.Numeratore = nSenzaVirgola - daSottrarre;
+
+            f.Numeratore = (int)(nSenzaVirgola - daSottrarre);
             string den = "";
             for (int i = 0; i < periodo; i++) den += "9";
             for (int i = 0; i < antiPeriodo; i++) den += "0";
@@ -136,7 +162,7 @@ namespace ClassiUtili
             string nS = n.ToString();
             numeroCifre = nS.Substring(nS.IndexOf(',')).Length - 1;
 
-            return (int)(n * Math.Pow(10, numeroCifre));
+            return (int)Math.Round(n * Math.Pow(10, numeroCifre));
         }
         /// <summary>
         /// Costruisce la frazione 0/1.
@@ -328,7 +354,7 @@ namespace ClassiUtili
             Frazione f = this.Semplifica();
             if (f.IsDecimaleFinito())
                 return false;
-            if (f.Denominatore == 1)
+            if (Math.Abs(f.Denominatore) == 1)
                 return false;
             return true;
         }

@@ -10,6 +10,10 @@
         </div>
     </caption>
     <tr>
+        <td colspan=2><button disabled="@(BloccaOperazioni)" class="btn btn-dark" @onclick='(()=>Tasto(","))'>,</button></td>
+        <td colspan=2><button disabled="@BloccaOperazioni" class="btn btn-dark" @onclick='(()=>Tasto("_"))'>_</button></td>
+    </tr>
+    <tr>
         <td><button class="btn btn-dark" @onclick="Cancella">C</button></td>
         <td><button disabled="@BloccaOperazioni" class="btn btn-dark" @onclick='TornaIndietro'>←</button></td>
         <td><button disabled="@(BloccaOperazioni)" class="btn btn-dark" @onclick='(()=>Tasto("/"))'>ͱ</button></td>

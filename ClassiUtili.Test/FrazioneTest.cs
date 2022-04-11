@@ -126,9 +126,11 @@ namespace ClassiUtili.Test
         [InlineData("0,1_1", 1, 9)]
         [InlineData("0,001_3", 1, 999)]
         [InlineData("1,23456_3", 123333, 99900)]
-        [InlineData("2.23_1", 67, 30)]
+        [InlineData("2,23_1", 67, 30)]
         [InlineData("3/2", 3, 2)]
         [InlineData("3", 3, 1)]
+        [InlineData("-30,50", -61, 2)]
+        [InlineData("1,16_1", 7, 6)]
         public void Parse_DovrebbeCreareFrazioneDaStringa(string s, int expectedN, int expectedD)
         {
             // Arrange (setup iniziale o precondizioni)
