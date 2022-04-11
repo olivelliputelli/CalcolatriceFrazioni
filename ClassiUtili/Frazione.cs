@@ -53,43 +53,14 @@ namespace ClassiUtili
         /// Costruire una frazione da una stringa.
         /// </summary>
         /// <param name="s">La stringa che rappresenta la frazione.</param>
-        public Frazione(string s)
-        {
-            if (String.IsNullOrWhiteSpace(s)) return;
 
-            if (s.Contains('_')) // 123,4_1, 12,4567_2, 1,23, 1,2345_1
-            {
-                string[] elem = s.Split('_');
-                var f = new Frazione(double.Parse(elem[0]), int.Parse(elem[1]));
-                Numeratore = f.Numeratore;
-                Denominatore = f.Denominatore;
-            }
-            else if (s.Contains(','))
-            {
-                var f = new Frazione(double.Parse(s));
-                Numeratore = f.Numeratore;
-                Denominatore = f.Denominatore;
-            }
-
-            if (s.Contains('/'))
-            {
-                string[] elementi = s.Split('/'); // ["2","7"] oppure ["5"]
-
-                Numeratore = int.Parse(elementi[0]);
-
-                if (elementi.Length == 1) // "5"
-                    Denominatore = 1;
-                else
-                    Denominatore = int.Parse(elementi[1]); // "2/7"
-            }
-
-        }
 
         public static Frazione Parse(string s)
         {
+            if (String.IsNullOrWhiteSpace(s)) return new Frazione();
             if (s.Contains(','))
             {
-                if (s.Contains('_'))
+                if (s.Contains('_')) // 123,4_1, 12,4567_2, 1,23, 1,2345_1
                 {
                     string[] s2 = s.Split('_');
                     double numero = double.Parse(s2[0]);
@@ -103,7 +74,15 @@ namespace ClassiUtili
             }
             else if (s.Contains('/'))
             {
-                return new Frazione(s);
+                string[] elementi = s.Split('/'); // ["2","7"] oppure ["5"]
+
+                int numeratore = int.Parse(elementi[0]);
+                int denominatore = 0;
+                if (elementi.Length == 1) // "5"
+                    denominatore = 1;
+                else
+                    denominatore = int.Parse(elementi[1]); // "2/7"
+                return new Frazione(numeratore, denominatore);
             }
             else if (int.TryParse(s, out int n))
             {
@@ -243,7 +222,7 @@ namespace ClassiUtili
         public static Frazione operator ++(Frazione f) => f + 1;
         public static Frazione operator --(Frazione f) => f - 1;
         public static implicit operator Frazione(int n) => new Frazione(n);
-        public static explicit operator Frazione(string n) => new Frazione(n);
+        public static explicit operator Frazione(string n) => Frazione.Parse(n);
         public static bool operator ==(Frazione f1, Frazione f2)
             => f1.Numeratore * f2.Denominatore == f2.Numeratore * f1.Denominatore;
         public override bool Equals(object? obj)

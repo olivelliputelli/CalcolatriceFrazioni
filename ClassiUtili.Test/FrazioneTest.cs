@@ -75,9 +75,9 @@ namespace ClassiUtili.Test
         public void OpeatorePiù_DovrebbeCalcolareFrazioneEIntero()
         {
             // Arrange (setup iniziale o precondizioni)
-            var a = new Frazione("7/2");
+            var a = Frazione.Parse("7/2");
             int b = -2;
-            Frazione expected = new Frazione("3/2");
+            Frazione expected = Frazione.Parse("3/2");
             // Act (funzionalità da testare o azioni)
             Frazione actual = a + b;
 
