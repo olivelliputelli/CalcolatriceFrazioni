@@ -1,5 +1,7 @@
 ﻿@page "/bitwise"
 
+<h1>@(Enum.Parse<Stagione>("Estate"))</h1>
+
 <h3>Operatori bitwise</h3>
 
 <input @bind="Numero1" />
@@ -8,10 +10,10 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            
+
             <th>Operazione</th>
-        <th>Base 10</th>   
-         <th>Base 2</th> 
+            <th>Base 10</th>
+            <th>Base 2</th>
         </tr>
     </thead>
     <tbody>
@@ -22,28 +24,33 @@
         </tr>
         <tr>
             <th>N2</th>
-             <td>@Numero2</td>
+            <td>@Numero2</td>
             <td style="font-family:'Courier New'">@Convert.ToString(Numero2,2).PadLeft(32, '0')</td>
         </tr>
         <tr>
             <th>Complemento N1</th>
-             <td>@(~Numero1)</td>
+            <td>@(~Numero1)</td>
             <td style="font-family:'Courier New'">@Convert.ToString(~Numero1,2).PadLeft(32, '0')</td>
         </tr>
-                <tr>
+        <tr>
             <th>N1 & N2</th>
-             <td>@(Numero1 & Numero2)</td>
+            <td>@(Numero1 & Numero2)</td>
             <td style="font-family:'Courier New'">@Convert.ToString(Numero1 & Numero2,2).PadLeft(32, '0')</td>
         </tr>
-                        <tr>
+        <tr>
             <th>N1 | N2</th>
-             <td>@(Numero1 | Numero2)</td>
+            <td>@(Numero1 | Numero2)</td>
             <td style="font-family:'Courier New'">@Convert.ToString(Numero1 | Numero2,2).PadLeft(32, '0')</td>
         </tr>
-                        <tr>
+        <tr>
             <th>N1 ^ N2</th>
-             <td>@(Numero1 ^ Numero2)</td>
+            <td>@(Numero1 ^ Numero2)</td>
             <td style="font-family:'Courier New'">@Convert.ToString(Numero1 ^ Numero2,2).PadLeft(32, '0')</td>
+        </tr>
+                <tr>
+            <th>Complemento</th>
+            <td>00001111</td>
+            <td style="font-family:'Courier New'">@Convert.ToString(~0b_00001111,2).PadLeft(32, '0')</td>
         </tr>
     </tbody>
 </table>
