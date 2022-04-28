@@ -1,10 +1,40 @@
 ﻿@page "/esercizioenum"
 
-<h3>EsercizioEnum</h3>
-<h3>@adattoA</h3>
+<h3>Esercizio Enum</h3>
+
+<input @bind="@NuovoProdotto.Nome" />
+<input @bind="@NuovoProdotto.DataProduzione" type="date" @bind:format="yyyy-MM-dd" />
+
+
+<label for="nazioni">Scegli una nazione:</label>
+<select id="nazioni" name="nazioni" @bind="@NuovoProdotto.Nazione">
+    @foreach (var item in Enum.GetValues<Nazione>())
+    {
+        <option value=@item>@item</option>
+    }
+</select>
+
+@foreach (var item in Enum.GetValues<Stagione>())
+{
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" 
+        @onchange="@(() => ModificaAdattoA(@item))" id=@($"{@item}CheckChecked")>
+        <label class="form-check-label" for=@($"{@item}CheckChecked")>
+            @item
+        </label>
+    </div>
+}
+
+<h3>
+    Nazione prodotto: @NuovoProdotto.Nazione <br />
+    Prodotto adatto in: @NuovoProdotto.AdattoA
+</h3>
 
 @code {
-Stagione adattoA = Stagione.AutunnoInverno & ~Stagione.Autunno | Stagione.Estate;
+    private Prodotto NuovoProdotto { get; set; } = new();
 
-
+    void ModificaAdattoA(Stagione stagione)
+    {
+            NuovoProdotto.AdattoA ^= stagione;
+    }
 }
