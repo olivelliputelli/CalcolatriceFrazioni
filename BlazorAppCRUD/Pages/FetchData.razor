@@ -1,15 +1,14 @@
 ﻿@page "/fetchdata"
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>categorie</PageTitle>
 
 @using BlazorAppCRUD.Data
-@inject WeatherForecastService ForecastService
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
 
-<h1>Weather forecast</h1>
+<h1>Categorie</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
-
-@if (forecasts == null)
+@if (categorie == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -18,20 +17,16 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>#</th>
+                <th>Nome</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var item in categorie)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@item.CategoriaId</td>
+                    <td>@item.Nome</td>
                 </tr>
             }
         </tbody>
@@ -39,10 +34,11 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private List<Categoria>? categorie;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        using var context = DbFactory.CreateDbContext();
+        categorie = await context.Categorie.ToListAsync();
     }
 }
