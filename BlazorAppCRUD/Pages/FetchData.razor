@@ -1,44 +1,58 @@
 ﻿@page "/fetchdata"
 
-<PageTitle>categorie</PageTitle>
-
-@using BlazorAppCRUD.Data
-@using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 
-<h1>Categorie</h1>
+<EditForm Model="@Categoria" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label>
+        Nome categoria
+        <InputText @bind-Value="Categoria.Nome" />
+    </label>
+    <button type="submit" class="btn btn-primary">
+        Aggiungi categoria
+    </button>
+</EditForm>
 
-@if (categorie == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Categorie)
+        {
             <tr>
-                <th>#</th>
-                <th>Nome</th>
+                <td>@item.CategoriaId</td>
+                <td>@item.Nome</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in categorie)
-            {
-                <tr>
-                    <td>@item.CategoriaId</td>
-                    <td>@item.Nome</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        }
+    </tbody>
+</table>
 
 @code {
-    private List<Categoria>? categorie;
+    public Categoria? Categoria { get; set; } = new();
+    private List<Categoria>? Categorie { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
+    {
+        LoadCategorie();
+    }
+
+    private void HandleSubmit()
     {
         using var context = DbFactory.CreateDbContext();
-        categorie = await context.Categorie.ToListAsync();
+        context.Categorie.Add(Categoria);
+        context.SaveChanges();
+        Categoria = new();
+        Categorie = context.Categorie.ToList();
+    }
+
+    private void LoadCategorie()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Categorie = context.Categorie.ToList();
     }
 }
