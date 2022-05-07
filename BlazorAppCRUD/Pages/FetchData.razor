@@ -19,6 +19,7 @@
         <tr>
             <th>#</th>
             <th>Nome</th>
+            <th>Operazioni</th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +28,9 @@
             <tr>
                 <td>@item.CategoriaId</td>
                 <td>@item.Nome</td>
+                <td><button @onclick="@(() => Elimina(@item))" class="btn btn-warning">
+        Elimina
+    </button></td>
             </tr>
         }
     </tbody>
@@ -48,6 +52,14 @@
         context.SaveChanges();
         Categoria = new();
         Categorie = context.Categorie.ToList();
+    }
+
+    private void Elimina(Categoria categoriaDaEliminare)
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Remove(categoriaDaEliminare);
+        context.SaveChanges();
+        LoadCategorie();
     }
 
     private void LoadCategorie()
