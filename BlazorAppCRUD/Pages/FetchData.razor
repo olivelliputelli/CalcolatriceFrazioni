@@ -10,7 +10,7 @@
         <InputText @bind-Value="Categoria.Nome" />
     </label>
     <button type="submit" class="btn btn-primary">
-        Aggiungi categoria
+        @(IsAdd ? "Aggiungi nuova categoria":"Salva modifiche")
     </button>
 </EditForm>
 
@@ -28,16 +28,22 @@
             <tr>
                 <td>@item.CategoriaId</td>
                 <td>@item.Nome</td>
-                <td><button @onclick="@(() => Elimina(@item))" class="btn btn-warning">
-        Elimina
-    </button></td>
+                <td>
+                    <button @onclick="@(() => Elimina(@item))" class="btn btn-warning">
+                        Elimina
+                    </button>
+                    <button @onclick="@(() => Modifica(@item))" class="btn btn-secondary">
+                        Modifica
+                    </button>
+                </td>
             </tr>
         }
     </tbody>
 </table>
 
 @code {
-    public Categoria? Categoria { get; set; } = new();
+    private bool IsAdd = true;
+    private Categoria? Categoria { get; set; } = new();
     private List<Categoria>? Categorie { get; set; } = new();
 
     protected override void OnInitialized()
@@ -48,8 +54,12 @@
     private void HandleSubmit()
     {
         using var context = DbFactory.CreateDbContext();
-        context.Categorie.Add(Categoria);
+        if (IsAdd)
+            context.Categorie.Add(Categoria);
+        else
+            context.Categorie.Update(Categoria);
         context.SaveChanges();
+        IsAdd = true;
         Categoria = new();
         Categorie = context.Categorie.ToList();
     }
@@ -60,6 +70,12 @@
         context.Remove(categoriaDaEliminare);
         context.SaveChanges();
         LoadCategorie();
+    }
+
+    private void Modifica(Categoria categoriaDaModificare)
+    {
+        IsAdd = false;
+        Categoria = categoriaDaModificare;
     }
 
     private void LoadCategorie()
