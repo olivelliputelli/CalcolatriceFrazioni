@@ -5,7 +5,7 @@ namespace BlazorAppCRUD.Data
     public class Categoria
     {
         public int CategoriaId { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Il nome della Categoria è obbligatorio!")]
         public string? Nome { get; set; }
     }
 }

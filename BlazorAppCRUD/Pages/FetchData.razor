@@ -9,37 +9,56 @@
         Nome categoria
         <InputText @bind-Value="Categoria.Nome" />
     </label>
-    <button type="submit" class="btn btn-primary">
-        @(IsAdd ? "Aggiungi nuova categoria":"Salva modifiche")
-    </button>
-</EditForm>
+    @if (IsAdd)
+    {
+        <button type="submit" class="btn btn-primary">
+            Aggiungi nuova categoria
+        </button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-warning">
+            Salva modifiche
+        </button>
+    }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Nome</th>
-            <th>Operazioni</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Categorie)
-        {
+</EditForm>
+@if (Categorie?.Count > 0 || Categorie is null)
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@item.CategoriaId</td>
-                <td>@item.Nome</td>
-                <td>
-                    <button @onclick="@(() => Elimina(@item))" class="btn btn-warning">
-                        Elimina
-                    </button>
-                    <button @onclick="@(() => Modifica(@item))" class="btn btn-secondary">
-                        Modifica
-                    </button>
-                </td>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Operazioni</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Categorie)
+            {
+                <tr>
+                    <td>@item.CategoriaId</td>
+                    <td>@item.Nome</td>
+                    <td>
+                        <button @onclick="@(() => Elimina(@item))" class="btn btn-danger">
+                            Elimina
+                        </button>
+                        <button @onclick="@(() => Modifica(@item))" class="btn btn-secondary">
+                            Modifica
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        Non ci sono categorie da mostrare!
+    </div>
+}
+
 
 @code {
     private bool IsAdd = true;
