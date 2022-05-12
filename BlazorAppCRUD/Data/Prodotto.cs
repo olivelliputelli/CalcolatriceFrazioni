@@ -10,5 +10,6 @@ namespace BlazorAppCRUD.Data
         public decimal? Prezzo { get; set; } = 0.0M;
         public DateTime? DataScadenzaGaranzia { get; set; } = DateTime.Today.AddYears(2);
         public virtual Categoria? Categoria { get; set; }
+        public int? CategoriaId { get; set; }
     }
 }

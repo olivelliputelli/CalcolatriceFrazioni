@@ -11,18 +11,22 @@
     </label>
     <label>
         Categoria
-        <InputSelect @bind-Value="Prodotto.Categoria.CategoriaId">
-             <option value="">Select classification ...</option>
+        <InputSelect @bind-Value="Prodotto.CategoriaId">
+            <option value="">Categoria ...</option>
             @foreach (var item in Categorie)
             {
                 <option value="@item.CategoriaId">@item.Nome</option>
             }
         </InputSelect>
     </label>
+     <label>
+        Prezzo
+        <InputNumber @bind-Value="Prodotto.Prezzo" />
+    </label>
     @if (IsAdd)
     {
         <button type="submit" class="btn btn-primary">
-            Aggiungi nuova categoria
+            Aggiungi nuovo prodotto
         </button>
     }
     else
@@ -40,6 +44,9 @@
             <tr>
                 <th>#</th>
                 <th>Nome Prodotto</th>
+                <th>Categoria</th>
+                <th>Prezzo</th>
+                <th>Scadenza garanzia</th>
                 <th>Operazioni</th>
             </tr>
         </thead>
@@ -49,6 +56,9 @@
                 <tr>
                     <td>@item.ProdottoId</td>
                     <td>@item.Nome</td>
+                    <td>@item.Categoria?.Nome</td>
+                    <td>@($"{item.Prezzo:C}")</td>
+                    <td>@item.DataScadenzaGaranzia?.ToLongDateString()</td>
                     <td>
                         <button @onclick="@(() => Elimina(item))" class="btn btn-danger">
                             Elimina
@@ -90,7 +100,7 @@ else
         context.SaveChanges();
         IsAdd = true;
         Prodotto = new();
-        Prodotti = context.Prodotti.ToList();
+        LoadCategorie();
     }
 
     private void Elimina(Prodotto prodottoDaEliminare)
