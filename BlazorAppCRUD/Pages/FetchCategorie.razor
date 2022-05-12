@@ -1,4 +1,4 @@
-﻿@page "/fetchdata"
+﻿@page "/fetchcategorie"
 
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 
@@ -21,9 +21,9 @@
             Salva modifiche
         </button>
     }
-
 </EditForm>
-@if (Categorie?.Count > 0 || Categorie is null)
+
+@if (Categorie?.Count > 0)
 {
     <table class="table">
         <thead>
@@ -40,10 +40,10 @@
                     <td>@item.CategoriaId</td>
                     <td>@item.Nome</td>
                     <td>
-                        <button @onclick="@(() => Elimina(@item))" class="btn btn-danger">
+                        <button @onclick="@(() => Elimina(item))" class="btn btn-danger">
                             Elimina
                         </button>
-                        <button @onclick="@(() => Modifica(@item))" class="btn btn-secondary">
+                        <button @onclick="@(() => Modifica(item))" class="btn btn-secondary">
                             Modifica
                         </button>
                     </td>
@@ -58,7 +58,6 @@ else
         Non ci sono categorie da mostrare!
     </div>
 }
-
 
 @code {
     private bool IsAdd = true;
@@ -80,13 +79,13 @@ else
         context.SaveChanges();
         IsAdd = true;
         Categoria = new();
-        Categorie = context.Categorie.ToList();
+        LoadCategorie();
     }
 
     private void Elimina(Categoria categoriaDaEliminare)
     {
         using var context = DbFactory.CreateDbContext();
-        context.Remove(categoriaDaEliminare);
+        context.Categorie.Remove(categoriaDaEliminare);
         context.SaveChanges();
         LoadCategorie();
     }

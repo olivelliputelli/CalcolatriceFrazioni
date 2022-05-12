@@ -6,6 +6,7 @@ namespace BlazorAppCRUD.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Categoria> Categorie { get; set; }
+        public DbSet<Prodotto> Prodotti { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

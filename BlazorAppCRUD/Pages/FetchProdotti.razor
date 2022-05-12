@@ -1,0 +1,116 @@
+﻿@page "/fetchprodotti"
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+
+<EditForm Model="@Prodotto" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label>
+        Nuovo Prodotto
+        <InputText @bind-Value="Prodotto.Nome" />
+    </label>
+    <label>
+        Categoria
+        <InputSelect @bind-Value="Prodotto.Categoria.CategoriaId">
+             <option value="">Select classification ...</option>
+            @foreach (var item in Categorie)
+            {
+                <option value="@item.CategoriaId">@item.Nome</option>
+            }
+        </InputSelect>
+    </label>
+    @if (IsAdd)
+    {
+        <button type="submit" class="btn btn-primary">
+            Aggiungi nuova categoria
+        </button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-warning">
+            Salva modifiche
+        </button>
+    }
+</EditForm>
+
+@if (Prodotti?.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nome Prodotto</th>
+                <th>Operazioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Prodotti)
+            {
+                <tr>
+                    <td>@item.ProdottoId</td>
+                    <td>@item.Nome</td>
+                    <td>
+                        <button @onclick="@(() => Elimina(item))" class="btn btn-danger">
+                            Elimina
+                        </button>
+                        <button @onclick="@(() => Modifica(item))" class="btn btn-secondary">
+                            Modifica
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        Non ci sono categorie da mostrare!
+    </div>
+}
+
+@code {
+    private bool IsAdd = true;
+    private Prodotto? Prodotto { get; set; } = new();
+    private List<Prodotto>? Prodotti { get; set; } = new();
+    private List<Categoria>? Categorie { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        LoadCategorie();
+    }
+
+    private void HandleSubmit()
+    {
+        using var context = DbFactory.CreateDbContext();
+        if (IsAdd)
+            context.Add(Prodotto);
+        else
+            context.Update(Prodotto);
+        context.SaveChanges();
+        IsAdd = true;
+        Prodotto = new();
+        Prodotti = context.Prodotti.ToList();
+    }
+
+    private void Elimina(Prodotto prodottoDaEliminare)
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Remove(prodottoDaEliminare);
+        context.SaveChanges();
+        LoadCategorie();
+    }
+
+    private void Modifica(Prodotto prodottoDaModificare)
+    {
+        IsAdd = false;
+        Prodotto = prodottoDaModificare;
+    }
+
+    private void LoadCategorie()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Prodotti = context.Prodotti.ToList();
+        Categorie = context.Categorie.ToList();
+    }
+}
