@@ -46,6 +46,9 @@
                         <button @onclick="@(() => Modifica(item))" class="btn btn-secondary">
                             Modifica
                         </button>
+                        <button @onclick="@(() => VisualizzaProdotti(item))" class="btn btn-primary">
+                            Prodotti
+                        </button>
                     </td>
                 </tr>
             }
@@ -59,9 +62,20 @@ else
     </div>
 }
 
+@if (ProdottiCategoria?.Count > 0 && ProdottiCategoria is not null)
+{
+    <ul>
+        @foreach (var item in ProdottiCategoria)
+        {
+            <li>@item.Nome</li>
+        }
+    </ul>
+}
+
 @code {
     private bool IsAdd = true;
     private Categoria? Categoria { get; set; } = new();
+    private List<Prodotto>? ProdottiCategoria { get; set; } = new();
     private List<Categoria>? Categorie { get; set; } = new();
 
     protected override void OnInitialized()
@@ -96,9 +110,16 @@ else
         Categoria = categoriaDaModificare;
     }
 
+    private void VisualizzaProdotti(Categoria categoria)
+    {
+        ProdottiCategoria = categoria.Prodotti?.ToList();
+    }
+
     private void LoadCategorie()
     {
         using var context = DbFactory.CreateDbContext();
-        Categorie = context.Categorie.ToList();
+        Categorie = context.Categorie
+        .Include(c => c.Prodotti)
+        .ToList();
     }
 }
