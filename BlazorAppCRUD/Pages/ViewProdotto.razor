@@ -1,0 +1,21 @@
+﻿@page "/viewprodotto/{ProdottoId:int}"
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject NavigationManager Nav
+
+<h3>View Prodotto @Prodotto.ProdottoId</h3>
+@Prodotto.Nome <br>
+@Prodotto.DataScadenzaGaranzia?.ToLongDateString() <br>
+@Prodotto.Prezzo?.ToString("C")
+
+@code {
+    [Parameter]
+    public int ProdottoId { get; set; }
+    private Prodotto Prodotto { get; set; }
+    protected override void OnInitialized()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Prodotto = context.Prodotti?.Find(ProdottoId);
+    }
+
+}

@@ -1,42 +1,12 @@
 ﻿@page "/fetchprodotti"
 
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject NavigationManager Nav
 
-<EditForm Model="@Prodotto" OnValidSubmit="HandleSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <label>
-        Nuovo Prodotto
-        <InputText @bind-Value="Prodotto.Nome" />
-    </label>
-    <label>
-        Categoria
-        <InputSelect @bind-Value="Prodotto.CategoriaId">
-            <option value="">Categoria ...</option>
-            @foreach (var item in Categorie)
-            {
-                <option value="@item.CategoriaId">@item.Nome</option>
-            }
-        </InputSelect>
-    </label>
-     <label>
-        Prezzo
-        <InputNumber @bind-Value="Prodotto.Prezzo" />
-    </label>
-    @if (IsAdd)
-    {
-        <button type="submit" class="btn btn-primary">
+        <button class="btn btn-primary" @onclick='AggiungiProdotto'>
             Aggiungi nuovo prodotto
         </button>
-    }
-    else
-    {
-        <button type="submit" class="btn btn-warning">
-            Salva modifiche
-        </button>
-    }
-</EditForm>
-
+        <input @bind="Filtro" @bind:event="oninput" @onchange="Filtra"  />
 @if (Prodotti?.Count > 0)
 {
     <table class="table">
@@ -55,7 +25,7 @@
             {
                 <tr>
                     <td>@item.ProdottoId</td>
-                    <td>@item.Nome</td>
+                    <td><a href=@($"viewprodotto/{@item.ProdottoId}")>@item.Nome</a></td>
                     <td>@item.Categoria?.Nome</td>
                     <td>@($"{item.Prezzo:C}")</td>
                     <td>@item.DataScadenzaGaranzia?.ToLongDateString()</td>
@@ -81,26 +51,19 @@ else
 
 @code {
     private bool IsAdd = true;
+    public string Filtro { get; set; } = "";
     private Prodotto? Prodotto { get; set; } = new();
     private List<Prodotto>? Prodotti { get; set; } = new();
     private List<Categoria>? Categorie { get; set; } = new();
 
-    protected override void OnInitialized()
+    private void AggiungiProdotto()
     {
-        LoadCategorie();
+        Nav.NavigateTo("addprodotto");
     }
 
-    private void HandleSubmit()
+    protected override void OnInitialized()
     {
-        using var context = DbFactory.CreateDbContext();
-        if (IsAdd)
-            context.Add(Prodotto);
-        else
-            context.Update(Prodotto);
-        context.SaveChanges();
-        IsAdd = true;
-        Prodotto = new();
-        LoadCategorie();
+        LoadProdotti();
     }
 
     private void Elimina(Prodotto prodottoDaEliminare)
@@ -108,16 +71,23 @@ else
         using var context = DbFactory.CreateDbContext();
         context.Remove(prodottoDaEliminare);
         context.SaveChanges();
-        LoadCategorie();
+        LoadProdotti();
     }
 
     private void Modifica(Prodotto prodottoDaModificare)
     {
-        IsAdd = false;
+        Nav.NavigateTo($"addprodotto/{prodottoDaModificare.ProdottoId}");
         Prodotto = prodottoDaModificare;
     }
 
-    private void LoadCategorie()
+    private void Filtra()
+    {
+         using var context = DbFactory.CreateDbContext();
+        Prodotti = context.Prodotti.Where(p => p.Nome.Contains(Filtro)).ToList();
+
+    }
+
+    private void LoadProdotti()
     {
         using var context = DbFactory.CreateDbContext();
         Prodotti = context.Prodotti.ToList();

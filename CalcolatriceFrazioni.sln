@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassiUtili.Test", "ClassiU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{AC5517EB-CCEE-41A1-BFFB-2378120A6001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAppCRUD", "BlazorAppCRUD\BlazorAppCRUD.csproj", "{CC9B6FC3-18E5-41B7-83B0-CD814B26E6CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAppCRUD", "BlazorAppCRUD\BlazorAppCRUD.csproj", "{CC9B6FC3-18E5-41B7-83B0-CD814B26E6CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

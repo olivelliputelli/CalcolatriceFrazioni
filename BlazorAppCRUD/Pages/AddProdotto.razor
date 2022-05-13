@@ -1,0 +1,91 @@
+﻿@page "/addprodotto"
+@page "/addprodotto/{ProdottoId:int}"
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+<PageTitle>@TitoloPagina</PageTitle>
+<h3>@TitoloPagina</h3>
+<EditForm Model="@Prodotto" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label>
+        Nuovo Prodotto
+        <InputText @bind-Value="Prodotto.Nome" />
+    </label>
+    <label>
+        Categoria
+        <InputSelect @bind-Value="Prodotto.CategoriaId">
+            <option value="">Categoria ...</option>
+            @foreach (var item in Categorie)
+            {
+                <option value="@item.CategoriaId">@item.Nome</option>
+            }
+        </InputSelect>
+    </label>
+    <label>
+        Prezzo
+        <InputNumber @bind-Value="Prodotto.Prezzo" />
+    </label>
+    @if (IsAdd)
+    {
+        <button type="submit" class="btn btn-primary">
+            Aggiungi nuovo prodotto
+        </button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-warning">
+            Salva modifiche
+        </button>
+    }
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int? ProdottoId { get; set; } = null;
+    private string TitoloPagina { get; set; } = "Nuovo prodotto";
+    private bool IsAdd = true;
+    private Prodotto? Prodotto { get; set; } = new();
+    private List<Categoria>? Categorie { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        if (ProdottoId is not null)
+            TitoloPagina = $"Modifica il prodotto con ID {ProdottoId}";
+        LoadCategorie();
+    }
+
+    private void HandleSubmit()
+    {
+        using var context = DbFactory.CreateDbContext();
+        if (IsAdd)
+            context.Add(Prodotto);
+        else
+            context.Update(Prodotto);
+        context.SaveChanges();
+        IsAdd = true;
+        Prodotto = new();
+        LoadCategorie();
+    }
+
+    private void Elimina(Prodotto prodottoDaEliminare)
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Remove(prodottoDaEliminare);
+        context.SaveChanges();
+        LoadCategorie();
+    }
+
+    private void Modifica(Prodotto prodottoDaModificare)
+    {
+        IsAdd = false;
+        Prodotto = prodottoDaModificare;
+    }
+
+    private void LoadCategorie()
+    {
+        using var context = DbFactory.CreateDbContext();
+
+        Categorie = context.Categorie.ToList();
+    }
+}
