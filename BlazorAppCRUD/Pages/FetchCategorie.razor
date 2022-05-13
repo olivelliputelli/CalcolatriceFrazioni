@@ -30,6 +30,10 @@
             <tr>
                 <th>#</th>
                 <th>Nome</th>
+                <th># Prodotti</th>
+                <td>Min</td>
+                <td>Max</td>
+                <td>Media</td>
                 <th>Operazioni</th>
             </tr>
         </thead>
@@ -39,6 +43,10 @@
                 <tr>
                     <td>@item.CategoriaId</td>
                     <td>@item.Nome</td>
+                    <td>@item.Prodotti.Count</td>
+                    <td>@item.Prodotti.Min(p=>p.Prezzo)?.ToString("C")</td>
+                    <td>@item.Prodotti.Max(p=>p.Prezzo)?.ToString("C")</td>
+                    <td>@item.Prodotti.Average(p=>p.Prezzo)?.ToString("C")</td>
                     <td>
                         <button @onclick="@(() => Elimina(item))" class="btn btn-danger">
                             Elimina
@@ -67,7 +75,7 @@ else
     <ul>
         @foreach (var item in ProdottiCategoria)
         {
-            <li>@item.Nome</li>
+            <li>@item.Nome - @($"{item.Prezzo:C}")</li>
         }
     </ul>
 }

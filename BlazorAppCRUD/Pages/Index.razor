@@ -1,9 +1,56 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
 
-<h1>Hello, world!</h1>
+@using ChartJs.Blazor.Common
+@using ChartJs.Blazor.Common.Axes
+@using ChartJs.Blazor.Common.Axes.Ticks
+@using ChartJs.Blazor.Common.Enums
+@using ChartJs.Blazor.Common.Handlers
+@using ChartJs.Blazor.Common.Time
+@using ChartJs.Blazor.Util
+@using ChartJs.Blazor.Interop
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@using ChartJs.Blazor.PieChart
+<Chart Config="_config"></Chart>
+
+@code {
+    private PieConfig _config;
+
+    protected override void OnInitialized()
+    {
+        _config = new PieConfig
+            {
+                Options = new PieOptions
+                {
+                    Responsive = true,
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Prodotti per Categoria", FontSize=25
+                    }
+                }
+            };
+
+        using var context = DbFactory.CreateDbContext();
+        var Categorie = context.Categorie.Include(c => c.Prodotti).ToList();
+        var dati = new int[Categorie.Count()];
+        var colori = new string[Categorie.Count()];
+        Random g = new Random();
+        int i = 0;
+        foreach (var item in Categorie)
+        {
+            _config.Data.Labels.Add(item.Nome);
+            dati[i] = item.Prodotti.Count();
+            colori[i] = ColorUtil.ColorHexString((byte)g.Next(0, 256), (byte)g.Next(0, 256), (byte)g.Next(0, 256));
+            i++;
+        };
+        PieDataset<int> dataset = new PieDataset<int>(dati)
+            {
+                BackgroundColor = colori
+            };
+
+        _config.Data.Datasets.Add(dataset);
+    }
+}
