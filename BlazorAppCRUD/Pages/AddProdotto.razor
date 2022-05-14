@@ -2,13 +2,15 @@
 @page "/addprodotto/{ProdottoId:int}"
 
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject NavigationManager Nav
+
 <PageTitle>@TitoloPagina</PageTitle>
 <h3>@TitoloPagina</h3>
 <EditForm Model="@Prodotto" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <label>
-        Nuovo Prodotto
+        Nome Prodotto
         <InputText @bind-Value="Prodotto.Nome" />
     </label>
     <label>
@@ -39,7 +41,6 @@
     }
 </EditForm>
 
-
 @code {
     [Parameter]
     public int? ProdottoId { get; set; } = null;
@@ -51,7 +52,13 @@
     protected override void OnInitialized()
     {
         if (ProdottoId is not null)
+        {
+
             TitoloPagina = $"Modifica il prodotto con ID {ProdottoId}";
+            IsAdd = false;
+            using var context = DbFactory.CreateDbContext();
+            Prodotto = context.Prodotti.Find(ProdottoId);
+        }
         LoadCategorie();
     }
 
@@ -65,7 +72,7 @@
         context.SaveChanges();
         IsAdd = true;
         Prodotto = new();
-        LoadCategorie();
+        Nav.NavigateTo("/fetchprodotti");
     }
 
     private void Elimina(Prodotto prodottoDaEliminare)

@@ -3,10 +3,10 @@
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 @inject NavigationManager Nav
 
-        <button class="btn btn-primary" @onclick='AggiungiProdotto'>
-            Aggiungi nuovo prodotto
-        </button>
-        <input @bind="Filtro" @bind:event="oninput" @onchange="Filtra"  />
+<button class="btn btn-primary" @onclick='AggiungiProdotto'>
+    Aggiungi nuovo prodotto
+</button>
+<input @bind="Filtro" @bind:event="oninput" @onchange="Filtra" />
 @if (Prodotti?.Count > 0)
 {
     <table class="table">
@@ -33,9 +33,9 @@
                         <button @onclick="@(() => Elimina(item))" class="btn btn-danger">
                             Elimina
                         </button>
-                        <button @onclick="@(() => Modifica(item))" class="btn btn-secondary">
+                        <a class="btn btn-primary" title="Modifica" href=@($"/addprodotto/{item.ProdottoId}")>
                             Modifica
-                        </button>
+                        </a>
                     </td>
                 </tr>
             }
@@ -74,15 +74,9 @@ else
         LoadProdotti();
     }
 
-    private void Modifica(Prodotto prodottoDaModificare)
-    {
-        Nav.NavigateTo($"addprodotto/{prodottoDaModificare.ProdottoId}");
-        Prodotto = prodottoDaModificare;
-    }
-
     private void Filtra()
     {
-         using var context = DbFactory.CreateDbContext();
+        using var context = DbFactory.CreateDbContext();
         Prodotti = context.Prodotti.Where(p => p.Nome.Contains(Filtro)).ToList();
 
     }
