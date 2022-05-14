@@ -4,9 +4,18 @@
 @inject NavigationManager Nav
 
 <h3>View Prodotto @Prodotto.ProdottoId</h3>
-@Prodotto.Nome <br>
-@Prodotto.DataScadenzaGaranzia?.ToLongDateString() <br>
+@Prodotto.Nome
+<br>
+@Prodotto.DataScadenzaGaranzia?.ToLongDateString()
+<br>
 @Prodotto.Prezzo?.ToString("C")
+
+<br />
+<a class="btn btn-primary" title="Go Back" href="/fetchprodotti">
+    🔙 Back to Grid
+</a>
+
+
 
 @code {
     [Parameter]
