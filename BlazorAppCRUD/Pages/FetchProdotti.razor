@@ -21,7 +21,13 @@
         }
     </select>
 </label>
-@*  Categorie Scelte: @SelectedCategorie.Join(c => c+ ", ")*@
+@if (SelectedCategorie is not null)
+{
+    <div class="alert alert-info" role="alert">
+        Categorie Scelte: @string.Join(", ", SelectedCategorie)
+    </div>
+}
+
 @if (ProdottiFiltrati?.Count > 0)
 {
     <table class="table">
@@ -78,7 +84,7 @@ else
         {
             List<Prodotto> temp = Prodotti.Where(p => p.Nome.ToLower().Contains(Filtro.ToLower())).ToList();
 
-            if (SelectedCategorie is not null && SelectedCategorie.Count() > 0) 
+            if (SelectedCategorie is not null && SelectedCategorie.Count() > 0)
             {
                 temp = temp.Where(p => SelectedCategorie.ToList().Contains(p.Categoria.Nome)).ToList();
             }
