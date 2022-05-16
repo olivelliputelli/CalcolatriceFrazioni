@@ -6,8 +6,23 @@
 <button class="btn btn-primary" @onclick='AggiungiProdotto'>
     Aggiungi nuovo prodotto
 </button>
-<input @bind="Filtro" @bind:event="oninput" @onchange="Filtra" />
-@if (Prodotti?.Count > 0)
+
+<label>
+    Filtro
+    <input @bind="Filtro" @bind:event="oninput" />
+</label>
+<label>
+    Categorie
+    <select @onchange="SelectedCategorieChanged" multiple>
+        <option value="">Categoria ...</option>
+        @foreach (var item in Categorie)
+        {
+            <option value="@item.Nome" selected="true">@item.Nome</option>
+        }
+    </select>
+</label>
+@*  Categorie Scelte: @SelectedCategorie.Join(c => c+ ", ")*@
+@if (ProdottiFiltrati?.Count > 0)
 {
     <table class="table">
         <thead>
@@ -21,7 +36,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Prodotti)
+            @foreach (var item in ProdottiFiltrati)
             {
                 <tr>
                     <td>@item.ProdottoId</td>
@@ -45,7 +60,7 @@
 else
 {
     <div class="alert alert-warning" role="alert">
-        Non ci sono categorie da mostrare!
+        Non ci sono prodotti da mostrare!
     </div>
 }
 
@@ -54,6 +69,24 @@ else
     public string Filtro { get; set; } = "";
     private Prodotto? Prodotto { get; set; } = new();
     private List<Prodotto>? Prodotti { get; set; } = new();
+    private List<Prodotto>? prodottiFiltrati;
+    public string[] SelectedCategorie { get; set; }
+
+    public List<Prodotto>? ProdottiFiltrati
+    {
+        get
+        {
+            List<Prodotto> temp = Prodotti.Where(p => p.Nome.ToLower().Contains(Filtro.ToLower())).ToList();
+
+            if (SelectedCategorie is not null && SelectedCategorie.Count() > 0) 
+            {
+                temp = temp.Where(p => SelectedCategorie.ToList().Contains(p.Categoria.Nome)).ToList();
+            }
+
+            return temp;
+        }
+    }
+
     private List<Categoria>? Categorie { get; set; } = new();
 
     private void AggiungiProdotto()
@@ -74,17 +107,18 @@ else
         LoadProdotti();
     }
 
-    private void Filtra()
-    {
-        using var context = DbFactory.CreateDbContext();
-        Prodotti = context.Prodotti.Where(p => p.Nome.Contains(Filtro)).ToList();
-
-    }
-
     private void LoadProdotti()
     {
         using var context = DbFactory.CreateDbContext();
         Prodotti = context.Prodotti.ToList();
         Categorie = context.Categorie.ToList();
+    }
+
+    void SelectedCategorieChanged(ChangeEventArgs e)
+    {
+        if (e.Value is not null)
+        {
+            SelectedCategorie = (string[])e.Value;
+        }
     }
 }
