@@ -3,9 +3,19 @@
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 @inject NavigationManager Nav
 
-<button class="btn btn-primary" @onclick='AggiungiProdotto'>
-    Aggiungi nuovo prodotto
-</button>
+<AuthorizeView>
+    <Authorized>
+        <button class="btn btn-primary" @onclick='AggiungiProdotto'>
+            Aggiungi nuovo prodotto
+        </button>
+    </Authorized>
+    <NotAuthorized>
+        <p>
+            Operazioni CRUD solo per gli utenti registrati!
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 <label>
     Filtro
@@ -17,7 +27,7 @@
         <option value="">Categoria ...</option>
         @foreach (var item in Categorie)
         {
-            <option value="@item.Nome" selected="true">@item.Nome</option>
+            <option value="@item.Nome">@item.Nome</option>
         }
     </select>
 </label>
@@ -36,9 +46,16 @@
                 <th>#</th>
                 <th>Nome Prodotto</th>
                 <th>Categoria</th>
-                <th>Prezzo</th>
+                <th>
+                    <button @onclick="OrdinaPerPrezzo">
+                        Prezzo
+                    </button>
+                </th>
                 <th>Scadenza garanzia</th>
-                <th>Operazioni</th>
+                <AuthorizeView>
+                    <th>Operazioni</th>
+                </AuthorizeView>
+
             </tr>
         </thead>
         <tbody>
@@ -50,14 +67,16 @@
                     <td>@item.Categoria?.Nome</td>
                     <td>@($"{item.Prezzo:C}")</td>
                     <td>@item.DataScadenzaGaranzia?.ToLongDateString()</td>
-                    <td>
-                        <button @onclick="@(() => Elimina(item))" class="btn btn-danger">
-                            Elimina
-                        </button>
-                        <a class="btn btn-primary" title="Modifica" href=@($"/addprodotto/{item.ProdottoId}")>
-                            Modifica
-                        </a>
-                    </td>
+                    <AuthorizeView>
+                        <td>
+                            <button @onclick="@(() => Elimina(item))" class="btn btn-danger">
+                                Elimina
+                            </button>
+                            <a class="btn btn-primary" title="Modifica" href=@($"/addprodotto/{item.ProdottoId}")>
+                                Modifica
+                            </a>
+                        </td>
+                    </AuthorizeView>
                 </tr>
             }
         </tbody>
@@ -72,6 +91,7 @@ else
 
 @code {
     private bool IsAdd = true;
+    private bool IsCrescentePerPrezzo { get; set; } = true;
     public string Filtro { get; set; } = "";
     private Prodotto? Prodotto { get; set; } = new();
     private List<Prodotto>? Prodotti { get; set; } = new();
@@ -87,7 +107,14 @@ else
             if (SelectedCategorie is not null && SelectedCategorie.Count() > 0)
             {
                 temp = temp.Where(p => SelectedCategorie.ToList().Contains(p.Categoria.Nome)).ToList();
+
+                if (IsCrescentePerPrezzo)
+                    temp = temp.OrderBy(p => p.Prezzo).ToList();
+                else
+                    temp = temp.OrderByDescending(p => p.Prezzo).ToList();
             }
+
+
 
             return temp;
         }
@@ -120,11 +147,16 @@ else
         Categorie = context.Categorie.ToList();
     }
 
-    void SelectedCategorieChanged(ChangeEventArgs e)
+    private void SelectedCategorieChanged(ChangeEventArgs e)
     {
         if (e.Value is not null)
         {
             SelectedCategorie = (string[])e.Value;
         }
+    }
+    private void OrdinaPerPrezzo()
+    {
+        IsCrescentePerPrezzo = !IsCrescentePerPrezzo;
+        StateHasChanged();
     }
 }

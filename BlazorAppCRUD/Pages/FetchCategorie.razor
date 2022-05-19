@@ -1,5 +1,7 @@
 ﻿@page "/fetchcategorie"
 
+@attribute [Authorize]
+
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 
 <EditForm Model="@Categoria" OnValidSubmit="HandleSubmit">
