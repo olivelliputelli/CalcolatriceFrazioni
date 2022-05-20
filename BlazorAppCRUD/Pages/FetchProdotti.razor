@@ -46,11 +46,7 @@
                 <th>#</th>
                 <th>Nome Prodotto</th>
                 <th>Categoria</th>
-                <th>
-                    <button @onclick="OrdinaPerPrezzo">
-                        Prezzo
-                    </button>
-                </th>
+                <th>Prezzo</th>
                 <th>Scadenza garanzia</th>
                 <AuthorizeView>
                     <th>Operazioni</th>
@@ -107,15 +103,7 @@ else
             if (SelectedCategorie is not null && SelectedCategorie.Count() > 0)
             {
                 temp = temp.Where(p => SelectedCategorie.ToList().Contains(p.Categoria.Nome)).ToList();
-
-                if (IsCrescentePerPrezzo)
-                    temp = temp.OrderBy(p => p.Prezzo).ToList();
-                else
-                    temp = temp.OrderByDescending(p => p.Prezzo).ToList();
             }
-
-
-
             return temp;
         }
     }
@@ -154,9 +142,5 @@ else
             SelectedCategorie = (string[])e.Value;
         }
     }
-    private void OrdinaPerPrezzo()
-    {
-        IsCrescentePerPrezzo = !IsCrescentePerPrezzo;
-        StateHasChanged();
-    }
+
 }

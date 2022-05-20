@@ -9,8 +9,15 @@
 @Prodotto.DataScadenzaGaranzia?.ToLongDateString()
 <br>
 @Prodotto.Prezzo?.ToString("C")
-
 <br />
+@Prodotto.Descrizione
+<br />
+@Prodotto.Iva
+<br />
+@Prodotto.IsNuovo
+<br />
+<br />
+<img src=@Prodotto.ImagePath alt=@Prodotto.Descrizione />
 <a class="btn btn-warning" title="Go Back" href="/fetchprodotti">
     🔙 Back to Grid
 </a>

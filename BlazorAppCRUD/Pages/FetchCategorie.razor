@@ -4,13 +4,16 @@
 
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 
+
 <EditForm Model="@Categoria" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <label>
         Nome categoria
         <InputText @bind-Value="Categoria.Nome" />
+
     </label>
+
     @if (IsAdd)
     {
         <button type="submit" class="btn btn-primary">
@@ -44,7 +47,10 @@
             {
                 <tr>
                     <td>@item.CategoriaId</td>
-                    <td>@item.Nome</td>
+                    <td>
+                        @item.Nome
+                        
+                    </td>
                     <td>@item.Prodotti.Count</td>
                     <td>@item.Prodotti.Min(p=>p.Prezzo)?.ToString("C")</td>
                     <td>@item.Prodotti.Max(p=>p.Prezzo)?.ToString("C")</td>
@@ -133,3 +139,6 @@ else
         .ToList();
     }
 }
+
+
+

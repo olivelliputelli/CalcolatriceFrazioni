@@ -1,18 +1,32 @@
 ﻿@page "/addprodotto"
 @page "/addprodotto/{ProdottoId:int}"
 
+@using Microsoft.AspNetCore.Hosting
+
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject IWebHostEnvironment Ambiente
 @inject NavigationManager Nav
 
 <PageTitle>@TitoloPagina</PageTitle>
 <h3>@TitoloPagina</h3>
-<EditForm Model="@Prodotto" OnValidSubmit="HandleSubmit">
+<EditForm Model="@Prodotto" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <label>
-        Nome Prodotto
-        <InputText @bind-Value="Prodotto.Nome" />
-    </label>
+
+    <h2>🆔 Identificazione</h2>
+    <div class="mb-3">
+        <label>
+            Nome prodotto:
+            <InputText class="form-control" @bind-Value="Prodotto.Nome" />
+        </label>
+    </div>
+    <div class="mb-3">
+        <label>
+            Descrizione:
+            <InputTextArea class="form-control" rows="3" @bind-Value="Prodotto.Descrizione" />
+        </label>
+    </div>
+
     <label>
         Categoria
         <InputSelect @bind-Value="Prodotto.CategoriaId">
@@ -27,6 +41,17 @@
         Prezzo
         <InputNumber @bind-Value="Prodotto.Prezzo" />
     </label>
+    <label>
+        Iva
+        <InputNumber @bind-Value="Prodotto.Iva" />
+    </label>
+    <label>
+        Nuovo
+        <InputCheckbox @bind-Value="Prodotto.IsNuovo" />
+    </label>
+
+    <InputFile OnChange="@LoadFile" />
+
     @if (IsAdd)
     {
         <button type="submit" class="btn btn-primary">
@@ -48,6 +73,8 @@
     private bool IsAdd = true;
     private Prodotto? Prodotto { get; set; } = new();
     private List<Categoria>? Categorie { get; set; } = new();
+    private IBrowserFile loadedFile;
+    private string? imgPath;
 
     protected override void OnInitialized()
     {
@@ -62,9 +89,15 @@
         LoadCategorie();
     }
 
-    private void HandleSubmit()
+    private async void HandleValidSubmit()
     {
-        using var context = DbFactory.CreateDbContext();
+        ApplicationDbContext context = DbFactory.CreateDbContext();
+        if (loadedFile != null)
+        {
+            await DownloadFile();
+            Prodotto.ImagePath = imgPath;
+            imgPath = null;
+        }
         if (IsAdd)
             context.Add(Prodotto);
         else
@@ -73,6 +106,16 @@
         IsAdd = true;
         Prodotto = new();
         Nav.NavigateTo("/fetchprodotti");
+    }
+
+    private void LoadFile(InputFileChangeEventArgs e) => loadedFile = e.File;
+    private async Task DownloadFile()
+    {
+        var trustedFileNameForFileStorage = Path.GetRandomFileName() + ".png";
+        var path = Path.Combine(Ambiente.ContentRootPath, "wwwroot\\", "uploads\\immagini\\prodotti\\", trustedFileNameForFileStorage);
+        imgPath = "\\uploads\\immagini\\prodotti\\" + trustedFileNameForFileStorage;
+        await using FileStream fs = new(path, FileMode.Create);
+        await loadedFile.OpenReadStream(int.MaxValue).CopyToAsync(fs);
     }
 
     private void Elimina(Prodotto prodottoDaEliminare)
@@ -92,7 +135,6 @@
     private void LoadCategorie()
     {
         using var context = DbFactory.CreateDbContext();
-
         Categorie = context.Categorie.ToList();
     }
 }
