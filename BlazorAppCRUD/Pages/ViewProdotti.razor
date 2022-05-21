@@ -1,20 +1,9 @@
-﻿@page "/fetchprodotti"
+﻿@page "/viewprodotti"
 
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 @inject NavigationManager Nav
 
-<AuthorizeView>
-    <Authorized>
-        <button class="btn btn-primary" @onclick='AggiungiProdotto'>
-            Aggiungi nuovo prodotto
-        </button>
-    </Authorized>
-    <NotAuthorized>
-        <p>
-            Operazioni CRUD solo per gli utenti registrati!
-        </p>
-    </NotAuthorized>
-</AuthorizeView>
+
 
 
 <label>
@@ -40,43 +29,22 @@
 
 @if (ProdottiFiltrati?.Count > 0)
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Nome Prodotto</th>
-                <th>Categoria</th>
-                <th>Prezzo</th>
-                <th>Scadenza garanzia</th>
-                <AuthorizeView>
-                    <th>Operazioni</th>
-                </AuthorizeView>
+    <div class="card-deck">
 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in ProdottiFiltrati)
-            {
-                <tr>
-                    <td>@item.ProdottoId</td>
-                    <td><a href=@($"viewprodotto/{@item.ProdottoId}")>@item.Nome</a></td>
-                    <td>@item.Categoria?.Nome</td>
-                    <td>@($"{item.Prezzo:C}")</td>
-                    <td>@item.DataScadenzaGaranzia?.ToLongDateString()</td>
-                    <AuthorizeView>
-                        <td>
-                            <button @onclick="@(() => Elimina(item))" class="btn btn-danger">
-                                Elimina
-                            </button>
-                            <a class="btn btn-primary" title="Modifica" href=@($"/addprodotto/{item.ProdottoId}")>
-                                Modifica
-                            </a>
-                        </td>
-                    </AuthorizeView>
-                </tr>
-            }
-        </tbody>
-    </table>
+        @foreach (var item in ProdottiFiltrati)
+        {
+            <div class="card">
+                <img src=@item.ImagePath class="card-img-top" alt=@item.Descrizione>
+                <div class="card-body">
+                    <h5 class="card-title">@item.Nome</h5>
+                    <p class="card-text">@item.Descrizione</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <p class="card-text"><small class="text-muted"><a href=@($"viewprodotto/{@item.ProdottoId}")>dettagli..</a></small></p>
+                </div>
+            </div>
+        }
+    </div>
+
 }
 else
 {
